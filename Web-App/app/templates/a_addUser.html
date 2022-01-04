@@ -1,0 +1,13 @@
+{% extends "admin.html" %}
+
+{% block content %}
+<form action="" method="post" novalidate>
+<div>
+    <p>Add User</p>
+    <p>{{ addUserForm.username.label }} {{ addUserForm.username }}</p>
+    <p>{{ addUserForm.password.label }} {{ addUserForm.password }}</p>
+    <p>{{ addUserForm.user_type.label }} {{ addUserForm.user_type }}</p>
+    <p>{{ addUserForm.submit }}</p><br>
+    </div>
+</form>
+{% endblock %}
