@@ -156,7 +156,7 @@ Run each command in a different terminal window (do not have to be in your virtu
 	docker-compose stop
 	```
 
--Use to upload changes to the docker containers database (in place of flask db migrate/upgrade
+- Use to upload changes to the docker containers database (in place of flask db migrate/upgrade)
 	```
 	docker db migrate 
 	docker db upgrade
@@ -167,10 +167,11 @@ Specifies the versions of all the different modules that have been imported/used
 
 Essential Lines of code:
 
--Do this to install/ create the requirements document (only do once in the beginning)
+- Do this to install/ create the requirements document (only do once in the beginning)
 	```
 	pip install -r requirements.txt
 	```
+	
 - Do this if you import anything new to automatically update your requirement.txt file to the newest version	
 	```
 	pip freeze > requirements.txt
@@ -182,13 +183,16 @@ This file holds all the hardcoded database information regarding the website in 
 
 Essential lines of code:
 
-docker exec CONTAINER /usr/bin/mysqldump -u root --password=root DATABASE > backup.sql
-
-	Creates and/or updates backup file for database
+- To create and/or update backup file for database
+	```
+	docker exec CONTAINER /usr/bin/mysqldump -u root --password=root DATABASE > backup.sql
+	```
 	
-cat backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u root --password=root DATABASE
-
-	Restore file for database on a machine
+- To restore file for database on a machine
+	```
+	cat backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u root --password=root DATABASE
+	```
+	
 
 ## Things for repairing
 
