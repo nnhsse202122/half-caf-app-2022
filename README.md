@@ -21,8 +21,12 @@ Use pair programming to your advantage. Just because it may seem faster to divid
 Know how to create virtual environments. A virtual environment is essential because it isolates the Flask downloads from the rest of the computer files. This ultimately prevents countless problems from occurring. Always do your Flask related downloads in a virtual environment and run the app in the virtual environment. Make your virtual enviroment in the Web-App directory.
 
 ```
+	For MacOS
 $ python3 -m venv venv
 $ source venv/bin/activate
+	For Windows
+$ python -m venv venv
+$ venv\Scripts\activate     
 ```
 
 The first line of code is run once when you first clone the repository to your computer. Run the second line of code to activate the virtual environment on your computer every new terminal window.
