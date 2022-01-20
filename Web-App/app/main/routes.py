@@ -309,7 +309,7 @@ def a_deleteUser():
         if request.method == 'POST':
                 user = User.query.get(deleteUser.user.data)
 
-                user.current_order_id = None
+                user.current_order_id = None #added
 
                 for o in Order.query.all():
 
