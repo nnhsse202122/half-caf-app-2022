@@ -309,9 +309,14 @@ def a_deleteUser():
         if request.method == 'POST':
                 user = User.query.get(deleteUser.user.data)
 
+                user.current_order_id = None
+
                 for o in Order.query.all():
+
                         if o.teacher_id == user.id:
+                        
                                 for d in o.drink:
+
                                         db.session.delete(d)
                                 db.session.delete(o)
 
@@ -410,7 +415,7 @@ def a_deleteFlavor():
         if request.method == 'POST':
                 flavor = Flavor.query.get(deleteFlavor.flavor.data)
 
-
+                orders = Order.query.all() # Added to define "orders". Might not be needed [addition]
                 for o in orders:
                         for d in o.drink:
                                 if d.flavor == flavor:
