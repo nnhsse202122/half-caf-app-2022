@@ -21,8 +21,12 @@ Use pair programming to your advantage. Just because it may seem faster to divid
 Know how to create virtual environments. A virtual environment is essential because it isolates the Flask downloads from the rest of the computer files. This ultimately prevents countless problems from occurring. Always do your Flask related downloads in a virtual environment and run the app in the virtual environment. Make your virtual enviroment in the Web-App directory.
 
 ```
+	For MacOS
 $ python3 -m venv venv
 $ source venv/bin/activate
+	For Windows
+$ python -m venv venv
+$ venv\Scripts\activate     
 ```
 
 The first line of code is run once when you first clone the repository to your computer. Run the second line of code to activate the virtual environment on your computer every new terminal window.
@@ -33,7 +37,6 @@ once in your virtual enviroment, type the following in your command line:
 ```
 docker-compose up --build db
 docker-compose up --build webapp
-
 ```
 
 the first of these 2 lines of code must be run every time something is changed in the database. The second line is used every time you would like to run the web app.
@@ -135,54 +138,65 @@ Docker is the shell-like container that holds the webapp so that we can easily d
 
 Essential lines of code include:
 
-docker-compose up --build db, 
-docker-compose up --build webapp
+- STARTING APP (WHEN YOU FIRST LOG ON)
+Run each command in a different terminal window (do not have to be in your virtual  environment)
+	```
+	docker-compose up --build db 
+	docker-compose up --build webapp
+	```
 
-	STARTING APP (WHEN YOU FIRST LOG ON)
-	Run each command in a different terminal window (do not have to be in your virtual  environment)
+- Allows user to enter the executive container in order to execute certain commands
+	```
+	docker-compose exec webapp /bin/sh
+	```
 
-docker-compose exec webapp /bin/sh
+- Rebuild the MYSQL container and recreate from scratch. Use this when you make changes to the db container before building the container again. Leave out -d to see it run	
+	```
+	docker-compose up -d --build --force-recreate --renew-anon-volumes db
+	```
 
-	Allows user to enter the executive container in order to execute certain commands
-	
-docker-compose up -d --build --force-recreate --renew-anon-volumes db
+- Stops ALL docker containers running	
+	```
+	docker-compose stop
+	```
 
-	Rebuild the MYSQL container and recreate from scratch. Use this when you make changes to the db container before building 		the container again. Leave out -d to see it run
-	
-docker-compose stop
-
-	Stops ALL docker containers running
-
-docker db migrate, 
-docker db upgrade
-
-	Use to upload changes to the docker containers database (in place of flask db migrate/upgrade)
+- Use to upload changes to the docker containers database (in place of flask db migrate/upgrade)
+	```
+	docker db migrate 
+	docker db upgrade
+	```
 	
 ## Requirements.txt
 Specifies the versions of all the different modules that have been imported/used within the code
 
 Essential Lines of code:
 
-pip install -r requirements.txt
-
-	Do this to install/ create the requirements document (only do once in the beginning)
+- Do this to install/ create the requirements document (only do once in the beginning)
+	```
+	pip install -r requirements.txt
+	```
 	
-pip freeze > requirements.txt
-
-	Do this if you import anything new to automatically update your requirement.txt file to the newest version
+- Do this if you import anything new to automatically update your requirement.txt file to the newest version	
+	```
+	pip freeze > requirements.txt
+	```
+	
 
 ## Backup.sql
 This file holds all the hardcoded database information regarding the website in case the database is ever wiped
 
 Essential lines of code:
 
-docker exec CONTAINER /usr/bin/mysqldump -u root --password=root DATABASE > backup.sql
-
-	Creates and/or updates backup file for database
+- To create and/or update backup file for database
+	```
+	docker exec CONTAINER /usr/bin/mysqldump -u root --password=root DATABASE > backup.sql
+	```
 	
-cat backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u root --password=root DATABASE
-
-	Restore file for database on a machine
+- To restore file for database on a machine
+	```
+	cat backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u root --password=root DATABASE
+	```
+	
 
 ## Things for repairing
 
