@@ -418,7 +418,7 @@ def a_deleteFlavor():
                 orders = Order.query.all() # Added to define "orders". Might not be needed [addition]
                 for o in orders:
                         for d in o.drink:
-                                if d.flavor == flavor:
+                                if d.flavors == flavor:
                                         db.session.delete(o)
 
                 db.session.delete(flavor)
