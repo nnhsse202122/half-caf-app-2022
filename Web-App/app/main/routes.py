@@ -309,7 +309,7 @@ def a_deleteUser():
         if request.method == 'POST':
                 user = User.query.get(deleteUser.user.data)
 
-                user.current_order_id = None
+                user.current_order_id = None #added
 
                 for o in Order.query.all():
 
@@ -418,7 +418,7 @@ def a_deleteFlavor():
                 orders = Order.query.all() # Added to define "orders". Might not be needed [addition]
                 for o in orders:
                         for d in o.drink:
-                                if d.flavor == flavor:
+                                if d.flavors == flavor:
                                         db.session.delete(o)
 
                 db.session.delete(flavor)
