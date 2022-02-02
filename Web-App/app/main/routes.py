@@ -63,6 +63,7 @@ def logout():
 
 @bp.route('/email')
 def email():
+        # Put this under logout_user() to test if working
         send_email('[Microblog] Reset Your Password', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'], text_body='test')
 
 @bp.route('/supersecretpage', methods=['GET', 'POST'])
