@@ -11,6 +11,7 @@ from flask import request
 from werkzeug.urls import url_parse
 from app.main import bp
 from app import login
+from app.main.email import send_email  #called send_email in logout function
 import datetime ##hello
 
 @login.user_loader
@@ -59,6 +60,10 @@ def login():
 def logout():
         logout_user()
         return redirect(url_for('main.login'))
+
+@bp.route('/email')
+def email():
+        send_email('[Microblog] Reset Your Password', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'], text_body='test')
 
 @bp.route('/supersecretpage', methods=['GET', 'POST'])
 def register():
