@@ -12,6 +12,7 @@ from werkzeug.urls import url_parse
 from app.main import bp
 from app import login
 import datetime ##hello
+from app.main.email import send_email
 
 @login.user_loader
 def load_user(id):
@@ -101,7 +102,6 @@ def teacherRegister():
 
                 return redirect(url_for('main.login'))
         return render_template('teachreg.html', title='Register', form=form)
-
 
 @bp.route('/menu')
 def menu():
@@ -234,7 +234,6 @@ def barista():
 
         return render_template('barista.html', title='Barista', order_list=order_list, form=form)
 
-
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
 def baristaCompleted():
         if current_user.is_anonymous or current_user.user_type != 'Barista':
@@ -272,7 +271,6 @@ def baristaCompleted():
 
 
         return render_template('baristaCompleted.html', title='Completed Orders', order_list_complete=order_list_complete, form=form)
-
 
 @bp.route('/addUser', methods=['GET', 'POST'])
 def a_addUser():
@@ -465,3 +463,7 @@ def a_userDashboard():
 
         return render_template('a_userDashboard.html', title='User Dashboard', userDashboardForm=userDashboard)
 
+@bp.route('/testEmail', methods=['GET','POST'])
+def a_testEmail():
+        send_email('Test email 2/3', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'])
+        return redirect(url_for('main.login'))
