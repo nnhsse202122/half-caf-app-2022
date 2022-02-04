@@ -143,6 +143,11 @@ class A_DeleteUserForm(FlaskForm):
         super(A_DeleteUserForm, self).__init__()
         self.user.choices = [(i.id, i.username) for i in User.query.order_by(User.id)]
 
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators={DataRequired(), Email()})
+    submit = SubmitField('Request Password Reset')
+
+
 # Drink Forms
 class A_AddDrinkForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
