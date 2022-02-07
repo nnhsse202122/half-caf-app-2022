@@ -465,5 +465,5 @@ def a_userDashboard():
 
 @bp.route('/testEmail', methods=['GET','POST'])
 def a_testEmail():
-        send_email('Test email 2/3', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'])
+        send_email('new email message', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'])
         return redirect(url_for('main.login'))
