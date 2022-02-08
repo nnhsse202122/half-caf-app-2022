@@ -463,7 +463,19 @@ def a_userDashboard():
 
         return render_template('a_userDashboard.html', title='User Dashboard', userDashboardForm=userDashboard)
 
-@bp.route('/testEmail', methods=['GET','POST'])
-def a_testEmail():
+@bp.route('/testEmailSafe ', methods=['GET','POST'])
+def a_testEmailSafe():
         send_email('new email message', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'])
         return redirect(url_for('main.login'))
+
+@bp.route('/testEmail', methods=['GET','POST'])
+def a_testEmail():
+        #query = '1'
+        #userDashboard = A_UserDashboardForm(query)
+        form = TeacherRegistrationForm()
+        #user = User(email_address=form.email_address.data)
+        user = User
+        print ("Your email is....")
+        print ("Your email is: " + user.email_address)
+        return redirect(url_for('main.login'))
+                #send_email(user.username+'new email message', sender=app.config['ADMINS'], recipients=user.email_address)
