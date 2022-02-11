@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app import db
-from app.main.forms import RegistrationForm, TeacherRegistrationForm, LoginForm, CustomizeForm, OrderForm, FavoriteDrinksForm, BaristaForm, A_AddUserForm, A_DeleteUserForm, A_AddDrinkForm, A_DeleteDrinkForm, A_AddFlavorForm, A_DeleteFlavorForm, A_UserDashboardForm, A_ModifyDrinkForm
+from app.main.forms import RegistrationForm, TeacherRegistrationForm, LoginForm, CustomizeForm, OrderForm, FavoriteDrinksForm, BaristaForm, A_AddUserForm, A_DeleteUserForm, A_AddDrinkForm, A_DeleteDrinkForm, A_AddFlavorForm, A_DeleteFlavorForm, A_UserDashboardForm, A_ModifyDrinkForm, ResetPasswordRequestForm, ResetPasswordForm
 from flask_login import current_user
 from flask_login import login_user
 from app import models
@@ -12,6 +12,7 @@ from werkzeug.urls import url_parse
 from app.main import bp
 from app import login
 from app.main.email import send_email  #called send_email in logout function
+from app.main.email import send_password_reset_email
 import datetime ##hello
 
 @login.user_loader
@@ -63,8 +64,9 @@ def logout():
 
 @bp.route('/email')
 def email():
+        return redirect(url_for('main.login'))
         # http://localhost:5000/email  #Leads to internal server error but send email
-        send_email('[Microblog] Reset Your Password', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'], text_body='hi')
+        # send_email('[Microblog] Reset Your Password', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'], text_body='hi')
 
 @bp.route('/supersecretpage', methods=['GET', 'POST'])
 def register():
@@ -471,3 +473,30 @@ def a_userDashboard():
 
         return render_template('a_userDashboard.html', title='User Dashboard', userDashboardForm=userDashboard)
 
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+        if current_user.is_authenticated:
+                return redirect(url_for('index'))
+        form = ResetPasswordRequestForm()
+        if form.validate_on_submit():
+                user = User.query.filter_by(email=form.email.data).first()
+                if user:
+                        send_password_reset_email(user)
+                flash('Check your email for the instructions to reset your password')
+                return redirect(url_for('main.login'))
+        return render_template('reset_password_request.html', title='Reset Password', form=form)
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+        if current_user.is_authenticated:
+                return redirect(url_for('index'))
+        user = User.verify_reset_password_token(token)
+        if not user:
+                return redirect(url_for('index'))
+        form = ResetPasswordRequestForm()
+        if form.validate_on_submit():
+                user.set_password(form.password.data)
+                db.session.commit()
+                flash('Your password has been reset.')
+                return redirect(url_for('login'))
+        return render_template('reset_password.html', form=form)
