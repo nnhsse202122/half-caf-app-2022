@@ -74,7 +74,7 @@ def register():
                 return redirect(url_for('main.home'))
         form = RegistrationForm()
         if form.validate_on_submit():
-                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=True)
+                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=True, email=form.email.data)
                 user.set_password(form.password.data)
                 db.session.add(user)
                 db.session.commit()
@@ -95,7 +95,7 @@ def teacherRegister():
                 return redirect(url_for('main.home'))
         form = TeacherRegistrationForm()
         if form.validate_on_submit():
-                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated = False)
+                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated = False, email=form.email.data)
                 user.set_password(form.password.data)
                 db.session.add(user)
                 db.session.commit()
@@ -489,14 +489,14 @@ def reset_password_request():
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
         if current_user.is_authenticated:
-                return redirect(url_for('index'))
+                return redirect(url_for('main.login'))
         user = User.verify_reset_password_token(token)
         if not user:
-                return redirect(url_for('index'))
+                return redirect(url_for('main.login'))
         form = ResetPasswordRequestForm()
         if form.validate_on_submit():
                 user.set_password(form.password.data)
                 db.session.commit()
                 flash('Your password has been reset.')
-                return redirect(url_for('login'))
+                return redirect(url_for('main.login'))
         return render_template('reset_password.html', form=form)
