@@ -88,7 +88,7 @@ def teacherRegister():
                 return redirect(url_for('main.home'))
         form = TeacherRegistrationForm()
         if form.validate_on_submit():
-                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated = False)
+                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=False, email_address=form.email_address.data)
                 user.set_password(form.password.data)
                 db.session.add(user)
                 db.session.commit()
@@ -463,19 +463,37 @@ def a_userDashboard():
 
         return render_template('a_userDashboard.html', title='User Dashboard', userDashboardForm=userDashboard)
 
-@bp.route('/testEmailSafe ', methods=['GET','POST'])
+@bp.route('/testEmailSafe', methods=['GET','POST'])
 def a_testEmailSafe():
         send_email('new email message', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'])
         return redirect(url_for('main.login'))
 
 @bp.route('/testEmail', methods=['GET','POST'])
 def a_testEmail():
-        #query = '1'
-        #userDashboard = A_UserDashboardForm(query)
-        form = TeacherRegistrationForm()
-        #user = User(email_address=form.email_address.data)
-        user = User
-        print ("Your email is....")
-        print ("Your email is: " + user.email_address)
+        
+        user = User.query.filter_by(email_address='nnhshalfcafapp@gmail.com').first()
+                #userName = User.query.filter_by(username = User.username) << IMPORTANT, GETS EMAILS OF ALL USERS.
+        idNumber = user.id
+        thisOrder = Order.query.filter_by(teacher_id = idNumber).first()
+
+        print(thisOrder.drink)
+        print (thisOrder.roomnum_id)
+        print(thisOrder.complete)
+
+
+
+                
+        body = "here is your order: " + thisOrder.drink
+        # recList = []
+        # for i in user:
+        #         #print(i)
+        #         #print("Your email is: ", i.email_address)
+        #         recList.append(i.email_address)
+        #         #subjectLine ="'s Half-Caf Update" """
+        #         #send_email(subjectLine, sender=app.config['ADMINS'], recipients=i.email_address)\
+        #         subjectLine = i.username + "'s Half caf update"
+        #         send_email(subjectLine, sender=app.config['ADMINS'][0], recipients=recList)
+           
+
         return redirect(url_for('main.login'))
-                #send_email(user.username+'new email message', sender=app.config['ADMINS'], recipients=user.email_address)
+                
