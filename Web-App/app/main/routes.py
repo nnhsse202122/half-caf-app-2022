@@ -11,7 +11,6 @@ from flask import request
 from werkzeug.urls import url_parse
 from app.main import bp
 from app import login
-from app.main.email import send_email  #called send_email in logout function
 from app.main.email import send_password_reset_email
 import datetime ##hello
 
@@ -493,7 +492,7 @@ def reset_password(token):
         user = User.verify_reset_password_token(token)
         if not user:
                 return redirect(url_for('main.login'))
-        form = ResetPasswordRequestForm()
+        form = ResetPasswordForm()
         if form.validate_on_submit():
                 user.set_password(form.password.data)
                 db.session.commit()
