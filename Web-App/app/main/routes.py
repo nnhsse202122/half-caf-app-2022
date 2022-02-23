@@ -476,23 +476,33 @@ def a_testEmail():
         idNumber = user.id
         thisOrder = Order.query.filter_by(teacher_id = idNumber).first()
 
-        print(thisOrder.drink)
-        print (thisOrder.roomnum_id)
-        print(thisOrder.complete)
+
+        orderList = []
 
 
+        #print(thisOrder.drink)
+        #print (thisOrder.roomnum_id)
+        #print(thisOrder.complete)
+        for i in thisOrder.drink:
+                print(i.menuItem)
+                orderList.append(i.menuItem)
 
-                
-        body = "here is your order: " + thisOrder.drink
+        orderString = ''.join(orderList)
+
+
+        #body = "here is your orderzz: " , (thisOrder.drink[1])
+        #print (body)
+        send_email(orderString, 'order ready!!', sender=app.config['ADMINS'][0], recipients=['nnhshalfcafapp@gmail.com'])
+
         # recList = []
         # for i in user:
         #         #print(i)
         #         #print("Your email is: ", i.email_address)
         #         recList.append(i.email_address)
         #         #subjectLine ="'s Half-Caf Update" """
-        #         #send_email(subjectLine, sender=app.config['ADMINS'], recipients=i.email_address)\
+        #         #send_email(subjectLine, sender=app.config['ADMINS'], recipients=i.email_address)
         #         subjectLine = i.username + "'s Half caf update"
-        #         send_email(subjectLine, sender=app.config['ADMINS'][0], recipients=recList)
+        #         send_email(subjectLine, sender=app.config['ADMINS'][0], recipients=recList,)
            
 
         return redirect(url_for('main.login'))
