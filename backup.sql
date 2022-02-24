@@ -1,5 +1,5 @@
 LOCK TABLES `user` WRITE;
-INSERT INTO `user` VALUES (1,1,'admin','pbkdf2:sha256:150000$amotRAQe$f90a9568ac168a8724c1db38e35c4af184062032e908823ba43f934b96183692','Admin',DEFAULT,'nnhshalfcafapp@gmail.com'),(2,1,'teacher','pbkdf2:sha256:150000$dEOnrXy7$2c4ab8e07c38cdc36452769354b8cf6c131f7397121f4ad0a0566f46a8ef3d2b','Teacher',DEFAULT,'nnhshalfcafapp@gmail.com'),(3,1,'barista','pbkdf2:sha256:150000$eNcME3qp$a9d0276a3a179ec59c55bd06913479ad2a7a677d88a4fa730b23e9faea0e9544','Barista',DEFAULT,'nnhshalfcafapp@gmail.com');
+INSERT INTO `user` VALUES (1,1,'admin','pbkdf2:sha256:150000$amotRAQe$f90a9568ac168a8724c1db38e35c4af184062032e908823ba43f934b96183692','Admin',DEFAULT,'nnhshalfcafapp+1@gmail.com'),(2,1,'teacher','pbkdf2:sha256:150000$dEOnrXy7$2c4ab8e07c38cdc36452769354b8cf6c131f7397121f4ad0a0566f46a8ef3d2b','Teacher',DEFAULT,'nnhshalfcafapp+2@gmail.com'),(3,1,'barista','pbkdf2:sha256:150000$eNcME3qp$a9d0276a3a179ec59c55bd06913479ad2a7a677d88a4fa730b23e9faea0e9544','Barista',DEFAULT,'nnhshalfcafapp+3@gmail.com');
 UNLOCK TABLES;
 
 LOCK TABLES `order` WRITE;
