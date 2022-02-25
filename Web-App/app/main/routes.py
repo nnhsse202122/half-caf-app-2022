@@ -12,7 +12,7 @@ from werkzeug.urls import url_parse
 from app.main import bp
 from app import login
 import datetime ##hello
-from app.main.email import send_email
+from app.main.email import order_email, reg_email
 
 @login.user_loader
 def load_user(id):
@@ -70,6 +70,7 @@ def register():
                 user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=True)
                 user.set_password(form.password.data)
                 db.session.add(user)
+                
                 db.session.commit()
                 user = User.query.filter_by(username=form.username.data).first()
 
@@ -91,6 +92,7 @@ def teacherRegister():
                 user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=False, email_address=form.email_address.data)
                 user.set_password(form.password.data)
                 db.session.add(user)
+                reg_email(user)
                 db.session.commit()
                 user = User.query.filter_by(username=form.username.data).first()
 
@@ -236,7 +238,7 @@ def barista():
                 completed_teacher_id = completed_order.teacher_id
                 completed_teacher = User.query.filter_by(id = completed_teacher_id).first()
                
-                send_email(completed_teacher.username, emailDrinkList, 'order ready!!', sender=app.config['ADMINS'][0], recipients=[completed_teacher.email_address])
+                order_email(completed_teacher.username, emailDrinkList, 'order ready!!', sender=app.config['ADMINS'][0], recipients=[completed_teacher.email_address])
                 
                 db.session.commit()
                 return redirect(url_for('main.barista'))
@@ -475,7 +477,7 @@ def a_userDashboard():
 
 @bp.route('/testEmailSafe', methods=['GET','POST'])
 def a_testEmailSafe():
-        send_email('new email message', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'])
+        order_email('new email message', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'])
         return redirect(url_for('main.login'))
 
 @bp.route('/testEmail', methods=['GET','POST'])
@@ -508,7 +510,7 @@ def a_testEmail():
 
         #body = "here is your orderzz: " , (thisOrder.drink[1])
         #print (body)
-        send_email(orderString, 'order ready!!', sender=app.config['ADMINS'][0], recipients=['nnhshalfcafapp@gmail.com'])
+        order_email(orderString, 'order ready!!', sender=app.config['ADMINS'][0], recipients=['nnhshalfcafapp@gmail.com'])
 
         # recList = []
         # for i in user:
@@ -516,9 +518,9 @@ def a_testEmail():
         #         #print("Your email is: ", i.email_address)
         #         recList.append(i.email_address)
         #         #subjectLine ="'s Half-Caf Update" """
-        #         #send_email(subjectLine, sender=app.config['ADMINS'], recipients=i.email_address)
+        #         #order_email(subjectLine, sender=app.config['ADMINS'], recipients=i.email_address)
         #         subjectLine = i.username + "'s Half caf update"
-        #         send_email(subjectLine, sender=app.config['ADMINS'][0], recipients=recList,)
+        #         order_email(subjectLine, sender=app.config['ADMINS'][0], recipients=recList,)
            
 
         return redirect(url_for('main.login'))
