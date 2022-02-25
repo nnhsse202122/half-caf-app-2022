@@ -220,14 +220,24 @@ def barista():
                                         temp = Temp.query.get(d.temp_id)
                                         drink = (d.menuItem, temp.temp, d.decaf, d.flavors, d.inst) #added the inst thing
                                         drink_list.append(drink)
-
+                                        
                                 order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id)
                                 order_list.append(order)
-        print(order_list)
+        #print(order_list)
         if request.method == 'POST':
                 completed_order_id = request.form.get("complete_order")
                 completed_order = Order.query.get(completed_order_id)
                 completed_order.complete = True
+                
+                emailDrinkList  = []
+                for i in completed_order.drink:
+                        emailDrinkList.append(i.menuItem)
+
+                completed_teacher_id = completed_order.teacher_id
+                completed_teacher = User.query.filter_by(id = completed_teacher_id).first()
+               
+                send_email(completed_teacher.username, emailDrinkList, 'order ready!!', sender=app.config['ADMINS'][0], recipients=[completed_teacher.email_address])
+                
                 db.session.commit()
                 return redirect(url_for('main.barista'))
 
@@ -262,13 +272,13 @@ def baristaCompleted():
 
                                 order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id)
                                 order_list_complete.append(order)
+
         if request.method == 'POST':
                 completed_order_id = request.form.get("mark_incomplete")
                 completed_order = Order.query.get(completed_order_id)
                 completed_order.complete = False
                 db.session.commit()
                 return redirect(url_for('main.baristaCompleted'))
-
 
         return render_template('baristaCompleted.html', title='Completed Orders', order_list_complete=order_list_complete, form=form)
 
@@ -475,17 +485,23 @@ def a_testEmail():
                 #userName = User.query.filter_by(username = User.username) << IMPORTANT, GETS EMAILS OF ALL USERS.
         idNumber = user.id
         thisOrder = Order.query.filter_by(teacher_id = idNumber).first()
-
+        teacherName = User.query.filter_by(idNumber = completed_order.teacher_id)
+        
 
         orderList = []
-
 
         #print(thisOrder.drink)
         #print (thisOrder.roomnum_id)
         #print(thisOrder.complete)
+        
         for i in thisOrder.drink:
                 print(i.menuItem)
                 orderList.append(i.menuItem)
+                if i.complete:
+                        isComplete = True
+                else:
+                        isComplete = False
+        
 
         orderString = ''.join(orderList)
 
