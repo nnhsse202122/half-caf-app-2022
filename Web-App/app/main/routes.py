@@ -144,19 +144,17 @@ def custDrink(drinkId):
                 return redirect(url_for('main.myOrder', orderId=o.id))
         return render_template('customize.html', title='Customize Drink', form=form, m=m)
 
-
 @bp.route('/myOrder/<orderId>', methods=['GET', 'POST'])
 def myOrder(orderId):
         if current_user.is_anonymous:
                 return redirect(url_for('main.login'))
-
         order = Order.query.get(orderId)
+        order_time = False
         form = OrderForm()
-        if request.method == 'POST' and order.drink != []:
+        if request.method == 'POST' and order.drink != [] and order_time == True :
                 order.roomnum_id = form.room.data
                 order.timestamp = datetime.datetime.now()
                 db.session.commit()
-
                 new_order = Order(teacher_id=current_user.id)
                 db.session.add(new_order)
                 db.session.commit()
@@ -164,8 +162,9 @@ def myOrder(orderId):
                 current_user.current_order_id=new_order_id
                 db.session.commit()
                 return redirect(url_for('main.myOrder', orderId=current_user.current_order_id))
+        else:
+                flash("this is not a time for ordering drinks ")
         return render_template('myOrder.html', title='My Order', form=form, order=order)
-
 @bp.route('/favoriteDrinks', methods=['GET','POST'])
 def favoriteDrinks():
         if current_user.is_anonymous:
