@@ -16,7 +16,13 @@
 
         a{color: #ff9138;
             }
-            
+        
+        .new{
+          color: #104fb5;
+          margin: 8px;
+          float: right;
+
+        }
         </style>
 
     </head>
@@ -37,7 +43,6 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.menu') }}">Menu</a>
-
                   </li>
 
                 {% if current_user.is_authenticated %}
@@ -61,6 +66,31 @@
                     <a class="nav-link" href="{{ url_for('main.teacherRegister') }}">Register</a>
                   </li>
                 {% endif %}
+
+                
+
+
+                {% if current_user.is_authenticated %}
+                <div class = "new"> {{current_user.username}} </div>
+                   
+                {% else %}
+                <div class = "new"> Not Logged In </div>
+                {%endif%}
+
+                <!-- {% if current_user.is_authenticated %}
+                <li class = "nav-item"> {{current_user.username}} </li>
+                   
+                {% else %}
+                <li class = "nav-item"> Not Logged In </li>
+                {%endif%} -->
+
+
+                <!-- {% if current_user.username != None%}
+                <li class = "nav-item"> {{current_user.username}} </li>
+                {% else %}
+                <li class = "nav-item"> Not Logged In </li>
+                {%endif%} -->
+
             </ul>
           </div>
         </nav>
@@ -79,8 +109,6 @@
         {% block content %}
         
         {% endblock %}
-        
-        
         
 
         
