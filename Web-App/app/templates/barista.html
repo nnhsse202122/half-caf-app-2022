@@ -12,8 +12,19 @@
              color: #104FB5;
             }
         </style>
+        <!-- <script>
+            let BtnEle = document.querySelector(".Btn");
+            let resEle = document.querySelector(".result");
+            let boolVal = true;
+            resEle.innerHTML = boolVal;
+            BtnEle.addEventListener("click", () => {
+               boolVal = !boolVal;
+               resEle.innerHTML = boolVal;
+            });
+         </script> -->
     </head>
     <body>
+        
         <h1> NNHS Half Caf Barista</h1>
         {% block navbar %}
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -29,12 +40,23 @@
                     <a class="nav-link" href="{{ url_for('main.baristaCompleted') }}">Completed Orders</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.barista') }}">Disable Orders</a>
-                  </li>
-                  <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
                   </li>
+                  <button class="Btn">Disable</button>
+                  <div class="result"></div>
+                  <script>
+                     let BtnEle = document.querySelector(".Btn");
+                     let resEle = document.querySelector(".result");
+                     let order_time = true;
+                     resEle.innerHTML = order_time;
+                     BtnEle.addEventListener("click", () => {
+                      order_time = !order_time;
+                        resEle.innerHTML = order_time;
+                     });
+                  </script>   
+
             </ul>
+            
           </div>
         </nav>
         {% endblock %}
@@ -90,5 +112,6 @@
             </tbody>
         </table>
         </div>
+      
     </body>
 {% endblock %}

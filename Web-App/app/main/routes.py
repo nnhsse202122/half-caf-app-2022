@@ -149,9 +149,9 @@ def myOrder(orderId):
         if current_user.is_anonymous:
                 return redirect(url_for('main.login'))
         order = Order.query.get(orderId)
-        order_time = False
         form = OrderForm()
-        if request.method == 'POST' and order.drink != [] and order_time == True :
+        order_time = False
+        if request.method == 'POST' and order.drink != [] and order_time==True:
                 order.roomnum_id = form.room.data
                 order.timestamp = datetime.datetime.now()
                 db.session.commit()
@@ -162,7 +162,7 @@ def myOrder(orderId):
                 current_user.current_order_id=new_order_id
                 db.session.commit()
                 return redirect(url_for('main.myOrder', orderId=current_user.current_order_id))
-        else:
+        elif order_time == False:
                 flash("this is not a time for ordering drinks ")
         return render_template('myOrder.html', title='My Order', form=form, order=order)
 @bp.route('/favoriteDrinks', methods=['GET','POST'])
@@ -236,6 +236,11 @@ def barista():
                 completed_order.complete = True
                 db.session.commit()
                 return redirect(url_for('main.barista'))
+
+        # if request.method == 'POST':
+        #         order_time = True
+        #         db.session.commit()
+        #         return redirect(url_for('main.barista'))
 
 
         return render_template('barista.html', title='Barista', order_list=order_list, form=form)
