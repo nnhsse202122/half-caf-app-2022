@@ -17,11 +17,12 @@
         a{color: #ff9138;
             }
         
-        .new{
+        #newItem{
           color: #104fb5;
-          margin: 8px;
-          float: right;
-
+          padding-left: 125vh;
+          align-items: right;
+          text-align: right;
+      
         }
         </style>
 
@@ -71,10 +72,10 @@
 
 
                 {% if current_user.is_authenticated %}
-                <div class = "new"> {{current_user.username}} </div>
+                <li class = "nav-link" id = "newItem"> {{current_user.username}} </li>
                    
                 {% else %}
-                <div class = "new"> Not Logged In </div>
+                <div class = "nav-link" id="newItem"> Not Logged In </div>
                 {%endif%}
 
                 <!-- {% if current_user.is_authenticated %}
