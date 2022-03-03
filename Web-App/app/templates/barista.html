@@ -8,13 +8,26 @@
         <title> {{ title }} </title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script>
+          $(document).ready(function(){
+            $(".notification_icon").click(function(){
+              $(".dropdown").toggleClass("active");
+            });
+          });
+        </script>
         <style>
 
             body {
               margin: 25px;
             }
 
-            .icon-button {
+            .notification_wrap{
+              width: 500px;
+              margin: 120px auto 0;
+            }
+
+            .notification_wrap .notification_icon .icon-button {
               position: absolute;
               display: flex;
               align-items: center;
@@ -30,15 +43,15 @@
               top: 70px; 
             }
 
-            .icon-button:hover {
+            .notification_wrap .notification_icon .icon-button:hover {
               cursor: pointer;
             }
 
-            .icon-button:active {
+            .notification_wrap .notification_icon .icon-button:active {
               background: #cccccc;
             }
 
-            .icon-button__badge {
+            .notification_wrap .notification_icon .icon-button__badge {
               position: absolute;
               top: -10px;
               right: -10px;
@@ -51,6 +64,43 @@
               align-items: center;
               border-radius: 50%;
             } 
+
+            .notification_wrap .dropdown{
+              width: 300px;
+              height: auto;
+              right: -780px;
+              top: -170px;
+              background: #d3d3d3;
+              border-radius: 5px;
+              position: relative;
+              display: none;
+            }
+
+            .notification_wrap .dropdown .notify_item{
+              display: flex;
+              align-items: center;
+              padding: 10px 0;
+              border-bottom: 1px solid #dbdaff;
+            }
+
+            .notification_wrap .dropdown .notify_item .notify_info p span{
+              color: #605dff;
+              margin-left: 5px;
+            }
+
+            .notification_wrap .dropdown:before{
+              content: "";
+              position: absolute;
+              top: -30px;
+	            left: 50%;
+	            transform: translateX(-50%);
+            	border: 15px solid;
+            	border-color: transparent transparent #fff transparent;
+            }
+
+            .notification_wrap .dropdown.active{
+            	display: block;
+            }
 
             body{margin: 10px;
               color: #104fb5;
@@ -148,9 +198,23 @@
     </body>
 
     <body>
-      <button type="button" class="icon-button">
-        <span class="material-icons">notifications</span>
-        <span class="icon-button__badge">2</span>
-      </button>
+      <div class="wrapper">
+        <div class="notification_wrap">
+          <div class="notification_icon">
+            <button type="button" class="icon-button">
+              <span class="material-icons">notifications</span>
+              <span class="icon-button__badge">2</span>
+            </button>
+          </div>
+          <div class="dropdown">
+            <div class="notify_item">
+              <div class="notify_info">
+                <p>Teacher just placed an order!</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </body>
 {% endblock %}
