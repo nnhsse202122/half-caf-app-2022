@@ -5,7 +5,7 @@ from app.main.forms import RegistrationForm, TeacherRegistrationForm, LoginForm,
 from flask_login import current_user
 from flask_login import login_user
 from app import models
-from app.models import User, Flavor, MenuItem, Drink, Order, Temp, RoomNum, DrinksToFlavor, FavoriteDrink
+from app.models import User, Flavor, MenuItem, Drink, Order, Temp, RoomNum, DrinksToFlavor, FavoriteDrink, HalfCaf
 from flask_login import logout_user, login_required
 from flask import request
 from werkzeug.urls import url_parse
@@ -146,12 +146,14 @@ def custDrink(drinkId):
 
 @bp.route('/myOrder/<orderId>', methods=['GET', 'POST'])
 def myOrder(orderId):
+
         if current_user.is_anonymous:
                 return redirect(url_for('main.login'))
         order = Order.query.get(orderId)
+        halfcaf = HalfCaf.query.get(1)
         form = OrderForm()
-        order_time = False
-        if request.method == 'POST' and order.drink != [] and order_time==True:
+
+        if request.method == 'POST' and order.drink != [] and halfcaf.acc_order==True:
                 order.roomnum_id = form.room.data
                 order.timestamp = datetime.datetime.now()
                 db.session.commit()
@@ -162,9 +164,13 @@ def myOrder(orderId):
                 current_user.current_order_id=new_order_id
                 db.session.commit()
                 return redirect(url_for('main.myOrder', orderId=current_user.current_order_id))
-        elif order_time == False:
-                flash("this is not a time for ordering drinks ")
+        elif halfcaf.acc_order == False:
+                flash("This is not a time for ordering drinks ")
+                return redirect(url_for('main.home'))
+
         return render_template('myOrder.html', title='My Order', form=form, order=order)
+
+        
 @bp.route('/favoriteDrinks', methods=['GET','POST'])
 def favoriteDrinks():
         if current_user.is_anonymous:
@@ -209,7 +215,7 @@ def barista():
                 return redirect(url_for('main.login'))
 
         form = BaristaForm()
-
+        store = HalfCaf.query.get(1)
         orders = Order.query.all()
         order_list = []
         order = ()
@@ -237,13 +243,7 @@ def barista():
                 db.session.commit()
                 return redirect(url_for('main.barista'))
 
-        # if request.method == 'POST':
-        #         order_time = True
-        #         db.session.commit()
-        #         return redirect(url_for('main.barista'))
-
-
-        return render_template('barista.html', title='Barista', order_list=order_list, form=form)
+        return render_template('barista.html', title='Barista', order_list=order_list, form=form, order_time = store.acc_order)
 
 
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
@@ -503,3 +503,26 @@ def reset_password(token):
                 flash('Your password has been reset.')
                 return redirect(url_for('main.login'))
         return render_template('reset_password.html', form=form)
+
+
+
+
+@bp.route('/disable', methods=['GET'])
+def disable():
+        if current_user.is_anonymous or current_user.user_type != 'Barista':
+                return redirect(url_for('main.login'))
+        store = HalfCaf.query.get(1)
+        store.acc_order = False
+        db.session.commit()
+        return redirect(url_for('main.barista'))
+
+
+
+@bp.route('/enable', methods=['GET'])
+def enable():
+        if current_user.is_anonymous or current_user.user_type != 'Barista':
+                return redirect(url_for('main.login'))
+        store = HalfCaf.query.get(1)
+        store.acc_order = True
+        db.session.commit()
+        return redirect(url_for('main.barista'))

@@ -12,16 +12,6 @@
              color: #104FB5;
             }
         </style>
-        <!-- <script>
-            let BtnEle = document.querySelector(".Btn");
-            let resEle = document.querySelector(".result");
-            let boolVal = true;
-            resEle.innerHTML = boolVal;
-            BtnEle.addEventListener("click", () => {
-               boolVal = !boolVal;
-               resEle.innerHTML = boolVal;
-            });
-         </script> -->
     </head>
     <body>
         
@@ -42,19 +32,15 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
                   </li>
-                  <button class="Btn">Disable</button>
-                  <div class="result"></div>
-                  <script>
-                     let BtnEle = document.querySelector(".Btn");
-                     let resEle = document.querySelector(".result");
-                     let order_time = true;
-                     resEle.innerHTML = order_time;
-                     BtnEle.addEventListener("click", () => {
-                      order_time = !order_time;
-                        resEle.innerHTML = order_time;
-                     });
-                  </script>   
-
+                  {% if order_time %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.disable') }}">Disable</a>
+                  </li>
+                  {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.enable') }}">Enable</a>
+                  </li>           
+                  {% endif %}       
             </ul>
             
           </div>

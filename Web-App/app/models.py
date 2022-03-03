@@ -119,3 +119,9 @@ class FavoriteDrink(db.Model):
     tempId = db.Column(db.Integer, db.ForeignKey('temp.id'))
     decaf = db.Column(db.Boolean, index=True, default=False)
     flavorId = db.Column(db.Integer, db.ForeignKey('flavor.id'), index=True)
+
+
+class HalfCaf(db.Model):
+    __tablename__ = 'HalfCaf'
+    id = db.Column(db.Integer, primary_key=True)
+    acc_order =db.Column(db.Boolean, index=True, default=True)

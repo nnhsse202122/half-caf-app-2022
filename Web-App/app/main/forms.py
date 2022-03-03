@@ -85,12 +85,6 @@ class FavoriteDrinksForm(FlaskForm):
             counter+=1
 
         
-            
-        
-            
-        
-        
-
 
 class OrderForm(FlaskForm):
     room = SelectField(u'Room Number:', coerce=int, validators=[DataRequired()])
@@ -106,8 +100,6 @@ class BaristaForm(FlaskForm):
 
     clear_completed_orders = SubmitField(u'Complete Orders')
 
-# class DisableForm(FlaskForm):
-#     order_time = False
     
 
 class A_UserDashboardForm(FlaskForm):
