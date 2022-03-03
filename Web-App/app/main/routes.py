@@ -21,6 +21,11 @@ def load_user(id):
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/home', methods=['GET', 'POST'])
 def home():
+        if current_user.user_type == "Barista":
+                return redirect(url_for('main.barista'))
+        elif current_user.user_type == "Admin":
+                return redirect(url_for('main.a_addUser'))
+
         menuItems = MenuItem.query.all()
 
         return render_template('home.html', title='Home Page', menuItems=menuItems)
@@ -107,6 +112,11 @@ def teacherRegister():
 
 @bp.route('/menu')
 def menu():
+        if current_user.user_type == "Barista":
+                return redirect(url_for('main.barista'))
+        elif current_user.user_type == "Admin":
+                return redirect(url_for('main.a_addUser'))
+
         menuItems = MenuItem.query.all()
 
         return render_template('menu.html', title='Menu', menuItems=menuItems)
@@ -115,6 +125,10 @@ def menu():
 def custDrink(drinkId):
         if current_user.is_anonymous:
                 return redirect(url_for('main.login'))
+        elif current_user.user_type == "Barista":
+                return redirect(url_for('main.barista'))
+        elif current_user.user_type == "Admin":
+                return redirect(url_for('main.a_addUser'))
 
         form = CustomizeForm(drinkId)
         m = MenuItem.query.get(drinkId)
@@ -144,7 +158,11 @@ def custDrink(drinkId):
 def myOrder(orderId):
         if current_user.is_anonymous:
                 return redirect(url_for('main.login'))
-
+        elif current_user.user_type == "Barista":
+                return redirect(url_for('main.barista'))
+        elif current_user.user_type == "Admin":
+                return redirect(url_for('main.a_addUser'))
+        
         order = Order.query.get(orderId)
         form = OrderForm()
         if request.method == 'POST' and order.drink != []:
@@ -165,6 +183,10 @@ def myOrder(orderId):
 def favoriteDrinks():
         if current_user.is_anonymous:
                 return redirect(url_for('main.login'))
+        elif current_user.user_type == "Barista":
+                return redirect(url_for('main.barista'))
+        elif current_user.user_type == "Admin":
+                return redirect(url_for('main.a_addUser'))
 
 
         favDrinks = FavoriteDrink.query.filter_by(userId=current_user.id)
