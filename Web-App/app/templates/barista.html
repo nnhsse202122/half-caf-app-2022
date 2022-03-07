@@ -6,6 +6,7 @@
         <meta charset="utf-8">
         <meta http-equiv='refresh' content='30';url=url_for('barista') />
         <title> {{ title }} </title>
+        
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -92,7 +93,7 @@
               content: "";
               position: absolute;
               top: -30px;
-	            left: 50%;
+	            left: 87%;
 	            transform: translateX(-50%);
             	border: 15px solid;
             	border-color: transparent transparent #fff transparent;
@@ -153,8 +154,16 @@
           </thead>
           <tbody>
           {% for o in order_list %}
+          <!--Order list 
+            o[0] - Username (ex. teacher)
+            o[1] - order info 
+              d - drink info
+            o[2] - Room number
+            o[3] - Timestamp
+            o[4] - Order number (?)
+          -->
             <tr>
-              <th scope="col">{{ o[2] }}</th>
+              <th scope="col">{{ o[2] }}</th> 
               <th scope="col">{{ o[0] }}</th>
               <th scope="col">
                 {% for d in o[1] %}
@@ -209,7 +218,9 @@
           <div class="dropdown">
             <div class="notify_item">
               <div class="notify_info">
-                <p>Teacher just placed an order!</p>
+                {% for o in order_list %}
+                  <p> room {{ o[2] }} {{ o[0] }} Just placed an order!</p>
+                {% endfor %}
               </div>
             </div>
           </div>
