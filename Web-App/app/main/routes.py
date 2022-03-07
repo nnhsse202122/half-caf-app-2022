@@ -21,10 +21,11 @@ def load_user(id):
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/home', methods=['GET', 'POST'])
 def home():
-        if current_user.user_type == "Barista":
-                return redirect(url_for('main.barista'))
-        elif current_user.user_type == "Admin":
-                return redirect(url_for('main.a_addUser'))
+        if current_user.is_authenticated:
+                if current_user.user_type == 'Barista':
+                        return redirect(url_for('main.barista'))
+                elif current_user.user_type == 'Admin':
+                        return redirect(url_for('main.a_addUser'))
 
         menuItems = MenuItem.query.all()
 
@@ -68,7 +69,7 @@ def logout():
 
 @bp.route('/supersecretpage', methods=['GET', 'POST'])
 def register():
-        if current_user.is_authenticated:
+        if current_user.is_authenticated or current_user.user_type != 'Admin':
                 return redirect(url_for('main.home'))
         form = RegistrationForm()
         if form.validate_on_submit():
@@ -112,13 +113,13 @@ def teacherRegister():
 
 @bp.route('/menu')
 def menu():
-        if current_user.user_type == "Barista":
-                return redirect(url_for('main.barista'))
-        elif current_user.user_type == "Admin":
-                return redirect(url_for('main.a_addUser'))
+        if current_user.is_authenticated:
+                if current_user.user_type == "Barista":
+                        return redirect(url_for('main.barista'))
+                elif current_user.user_type == "Admin":
+                        return redirect(url_for('main.a_addUser'))
 
         menuItems = MenuItem.query.all()
-
         return render_template('menu.html', title='Menu', menuItems=menuItems)
 
 @bp.route('/customizeDrink/<drinkId>', methods=['GET', 'POST'])
