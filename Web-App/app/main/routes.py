@@ -69,7 +69,7 @@ def logout():
 
 @bp.route('/supersecretpage', methods=['GET', 'POST'])
 def register():
-        if current_user.is_authenticated or current_user.user_type != 'Admin':
+        if current_user.is_authenticated:
                 return redirect(url_for('main.home'))
         form = RegistrationForm()
         if form.validate_on_submit():
