@@ -11,6 +11,7 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat password', validators=[DataRequired(), EqualTo('password')])
@@ -22,9 +23,14 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError('Please use a different email address.')
 
 class TeacherRegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat password', validators=[DataRequired(), EqualTo('password')])
@@ -38,6 +44,11 @@ class TeacherRegistrationForm(FlaskForm):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError('Please use a different email address.')
 
 class CustomizeForm(FlaskForm):
     temp = SelectField(u'Temperature', coerce=int)
@@ -76,12 +87,6 @@ class FavoriteDrinksForm(FlaskForm):
             counter+=1
 
         
-            
-        
-            
-        
-        
-
 
 class OrderForm(FlaskForm):
     room = SelectField(u'Room Number:', coerce=int, validators=[DataRequired()])
@@ -96,6 +101,8 @@ class OrderForm(FlaskForm):
 class BaristaForm(FlaskForm):
 
     clear_completed_orders = SubmitField(u'Complete Orders')
+
+    
 
 class A_UserDashboardForm(FlaskForm):
     submitActivate = SubmitField('Activate Users')
@@ -144,6 +151,15 @@ class A_DeleteUserForm(FlaskForm):
     def __init__(self):
         super(A_DeleteUserForm, self).__init__()
         self.user.choices = [(i.id, i.username) for i in User.query.order_by(User.id)]
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators={DataRequired(), Email()})
+    submit = SubmitField('Request Password Reset')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Request Password Reset')
 
 # Drink Forms
 class A_AddDrinkForm(FlaskForm):

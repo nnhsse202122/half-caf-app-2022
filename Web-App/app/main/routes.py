@@ -1,16 +1,17 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app import db
-from app.main.forms import RegistrationForm, TeacherRegistrationForm, LoginForm, CustomizeForm, OrderForm, FavoriteDrinksForm, BaristaForm, A_AddUserForm, A_DeleteUserForm, A_AddDrinkForm, A_DeleteDrinkForm, A_AddFlavorForm, A_DeleteFlavorForm, A_UserDashboardForm, A_ModifyDrinkForm
+from app.main.forms import RegistrationForm, TeacherRegistrationForm, LoginForm, CustomizeForm, OrderForm, FavoriteDrinksForm, BaristaForm, A_AddUserForm, A_DeleteUserForm, A_AddDrinkForm, A_DeleteDrinkForm, A_AddFlavorForm, A_DeleteFlavorForm, A_UserDashboardForm, A_ModifyDrinkForm, ResetPasswordRequestForm, ResetPasswordForm
 from flask_login import current_user
 from flask_login import login_user
 from app import models
-from app.models import User, Flavor, MenuItem, Drink, Order, Temp, RoomNum, DrinksToFlavor, FavoriteDrink
+from app.models import User, Flavor, MenuItem, Drink, Order, Temp, RoomNum, DrinksToFlavor, FavoriteDrink, HalfCaf
 from flask_login import logout_user, login_required
 from flask import request
 from werkzeug.urls import url_parse
 from app.main import bp
 from app import login
+from app.main.email import send_password_reset_email
 import datetime ##hello
 from app.main.email import order_email, reg_email
 
@@ -67,13 +68,19 @@ def logout():
         logout_user()
         return redirect(url_for('main.login'))
 
+@bp.route('/email')
+def email():
+        return redirect(url_for('main.login'))
+        # http://localhost:5000/email  #Leads to internal server error but send email
+        # send_email('[Microblog] Reset Your Password', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'], text_body='hi')
+
 @bp.route('/supersecretpage', methods=['GET', 'POST'])
 def register():
         if current_user.is_authenticated:
                 return redirect(url_for('main.home'))
         form = RegistrationForm()
         if form.validate_on_submit():
-                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=True)
+                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=True, email=form.email.data)
                 user.set_password(form.password.data)
                 db.session.add(user)
                 
@@ -154,9 +161,9 @@ def custDrink(drinkId):
                 return redirect(url_for('main.myOrder', orderId=o.id))
         return render_template('customize.html', title='Customize Drink', form=form, m=m)
 
-
 @bp.route('/myOrder/<orderId>', methods=['GET', 'POST'])
 def myOrder(orderId):
+
         if current_user.is_anonymous:
                 return redirect(url_for('main.login'))
         elif current_user.user_type == "Barista":
@@ -165,12 +172,13 @@ def myOrder(orderId):
                 return redirect(url_for('main.a_addUser'))
         
         order = Order.query.get(orderId)
+        halfcaf = HalfCaf.query.get(1)
         form = OrderForm()
-        if request.method == 'POST' and order.drink != []:
+
+        if request.method == 'POST' and order.drink != [] and halfcaf.acc_order==True:
                 order.roomnum_id = form.room.data
                 order.timestamp = datetime.datetime.now()
                 db.session.commit()
-
                 new_order = Order(teacher_id=current_user.id)
                 db.session.add(new_order)
                 db.session.commit()
@@ -178,8 +186,13 @@ def myOrder(orderId):
                 current_user.current_order_id=new_order_id
                 db.session.commit()
                 return redirect(url_for('main.myOrder', orderId=current_user.current_order_id))
+        elif halfcaf.acc_order == False:
+                flash("This is not a time for ordering drinks ")
+                return redirect(url_for('main.home'))
+
         return render_template('myOrder.html', title='My Order', form=form, order=order)
 
+        
 @bp.route('/favoriteDrinks', methods=['GET','POST'])
 def favoriteDrinks():
         if current_user.is_anonymous:
@@ -228,7 +241,7 @@ def barista():
                 return redirect(url_for('main.login'))
 
         form = BaristaForm()
-
+        store = HalfCaf.query.get(1)
         orders = Order.query.all()
         order_list = []
         order = ()
@@ -266,8 +279,7 @@ def barista():
                 db.session.commit()
                 return redirect(url_for('main.barista'))
 
-
-        return render_template('barista.html', title='Barista', order_list=order_list, form=form)
+        return render_template('barista.html', title='Barista', order_list=order_list, form=form, order_time = store.acc_order)
 
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
 def baristaCompleted():
@@ -498,53 +510,54 @@ def a_userDashboard():
 
         return render_template('a_userDashboard.html', title='User Dashboard', userDashboardForm=userDashboard)
 
-@bp.route('/testEmailSafe', methods=['GET','POST'])
-def a_testEmailSafe():
-        order_email('new email message', sender=app.config['ADMINS'][0], recipients=app.config['ADMINS'])
-        return redirect(url_for('main.login'))
 
-@bp.route('/testEmail', methods=['GET','POST'])
-def a_testEmail():
-        
-        user = User.query.filter_by(email_address='nnhshalfcafapp@gmail.com').first()
-                #userName = User.query.filter_by(username = User.username) << IMPORTANT, GETS EMAILS OF ALL USERS.
-        idNumber = user.id
-        thisOrder = Order.query.filter_by(teacher_id = idNumber).first()
-        teacherName = User.query.filter_by(idNumber = completed_order.teacher_id)
-        
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+        if current_user.is_authenticated:
+                return redirect(url_for('main.login'))  #main.index is what's on the tutorial
+        form = ResetPasswordRequestForm()
+        if form.validate_on_submit():
+                user = User.query.filter_by(email=form.email.data).first()
+                if user:
+                        send_password_reset_email(user)
+                flash('Check your email for the instructions to reset your password')
+                return redirect(url_for('main.login'))
+        return render_template('reset_password_request.html', title='Reset Password', form=form)
 
-        orderList = []
-
-        #print(thisOrder.drink)
-        #print (thisOrder.roomnum_id)
-        #print(thisOrder.complete)
-        
-        for i in thisOrder.drink:
-                print(i.menuItem)
-                orderList.append(i.menuItem)
-                if i.complete:
-                        isComplete = True
-                else:
-                        isComplete = False
-        
-
-        orderString = ''.join(orderList)
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+        if current_user.is_authenticated:
+                return redirect(url_for('main.login'))
+        user = User.verify_reset_password_token(token)
+        if not user:
+                return redirect(url_for('main.login'))
+        form = ResetPasswordForm()
+        if form.validate_on_submit():
+                user.set_password(form.password.data)
+                db.session.commit()
+                flash('Your password has been reset.')
+                return redirect(url_for('main.login'))
+        return render_template('reset_password.html', form=form)
 
 
-        #body = "here is your orderzz: " , (thisOrder.drink[1])
-        #print (body)
-        order_email(orderString, 'order ready!!', sender=app.config['ADMINS'][0], recipients=['nnhshalfcafapp@gmail.com'])
 
-        # recList = []
-        # for i in user:
-        #         #print(i)
-        #         #print("Your email is: ", i.email_address)
-        #         recList.append(i.email_address)
-        #         #subjectLine ="'s Half-Caf Update" """
-        #         #order_email(subjectLine, sender=app.config['ADMINS'], recipients=i.email_address)
-        #         subjectLine = i.username + "'s Half caf update"
-        #         order_email(subjectLine, sender=app.config['ADMINS'][0], recipients=recList,)
-           
 
-        return redirect(url_for('main.login'))
-                
+@bp.route('/disable', methods=['GET'])
+def disable():
+        if current_user.is_anonymous or current_user.user_type != 'Barista':
+                return redirect(url_for('main.login'))
+        store = HalfCaf.query.get(1)
+        store.acc_order = False
+        db.session.commit()
+        return redirect(url_for('main.barista'))
+
+
+
+@bp.route('/enable', methods=['GET'])
+def enable():
+        if current_user.is_anonymous or current_user.user_type != 'Barista':
+                return redirect(url_for('main.login'))
+        store = HalfCaf.query.get(1)
+        store.acc_order = True
+        db.session.commit()
+        return redirect(url_for('main.barista'))
