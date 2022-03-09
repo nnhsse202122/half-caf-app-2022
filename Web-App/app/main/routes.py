@@ -517,7 +517,7 @@ def reset_password_request():
                 return redirect(url_for('main.login'))  #main.index is what's on the tutorial
         form = ResetPasswordRequestForm()
         if form.validate_on_submit():
-                user = User.query.filter_by(email=form.email.data).first()
+                user = User.query.filter_by(email_address=form.email_address.data).first()
                 if user:
                         send_password_reset_email(user)
                 flash('Check your email for the instructions to reset your password')
