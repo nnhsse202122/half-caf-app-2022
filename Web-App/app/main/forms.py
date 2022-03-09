@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email_address = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat password', validators=[DataRequired(), EqualTo('password')])
@@ -30,14 +30,12 @@ class RegistrationForm(FlaskForm):
 
 class TeacherRegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat password', validators=[DataRequired(), EqualTo('password')])
     user_type = SelectField(u'User Type', choices=[('Teacher', 'Teacher')])
     # ^ change this line here ^
-    #added new things here
-    email_address = StringField('Email address', validators=[DataRequired()]) #new
+    email_address = StringField('Email address', validators=[DataRequired(), Email()]) #new
     submit = SubmitField('Register')
 
     def validate_username(self, username):
@@ -153,7 +151,7 @@ class A_DeleteUserForm(FlaskForm):
         self.user.choices = [(i.id, i.username) for i in User.query.order_by(User.id)]
 
 class ResetPasswordRequestForm(FlaskForm):
-    email = StringField('Email', validators={DataRequired(), Email()})
+    email_address = StringField('Email', validators={DataRequired(), Email()})
     submit = SubmitField('Request Password Reset')
 
 class ResetPasswordForm(FlaskForm):
