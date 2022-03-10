@@ -36,6 +36,8 @@ class TeacherRegistrationForm(FlaskForm):
         'Repeat password', validators=[DataRequired(), EqualTo('password')])
     user_type = SelectField(u'User Type', choices=[('Teacher', 'Teacher')])
     # ^ change this line here ^
+    #added new things here
+    email_address = StringField('Email address', validators=[DataRequired()]) #new
     submit = SubmitField('Register')
 
     def validate_username(self, username):

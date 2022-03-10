@@ -63,6 +63,16 @@
             <span style="color: red;"[{{ error }}]</span>
             {% endfor %}
         </p>
+
+        <!-- added new below-->
+        <p>
+            {{ form.email_address.label }}<br>
+            {{ form.email_address(size=32) }}<br>
+            {% for error in form.password.errors %}
+            <span style="color: red;"[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        
         <p hidden>
             {{ form.user_type }}
         </p>

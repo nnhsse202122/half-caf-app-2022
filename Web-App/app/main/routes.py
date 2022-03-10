@@ -13,6 +13,7 @@ from app.main import bp
 from app import login
 from app.main.email import send_password_reset_email
 import datetime ##hello
+from app.main.email import order_email, reg_email
 
 @login.user_loader
 def load_user(id):
@@ -21,6 +22,12 @@ def load_user(id):
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/home', methods=['GET', 'POST'])
 def home():
+        if current_user.is_authenticated:
+                if current_user.user_type == 'Barista':
+                        return redirect(url_for('main.barista'))
+                elif current_user.user_type == 'Admin':
+                        return redirect(url_for('main.a_addUser'))
+
         menuItems = MenuItem.query.all()
 
         return render_template('home.html', title='Home Page', menuItems=menuItems)
@@ -76,6 +83,7 @@ def register():
                 user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=True, email=form.email.data)
                 user.set_password(form.password.data)
                 db.session.add(user)
+                
                 db.session.commit()
                 user = User.query.filter_by(username=form.username.data).first()
 
@@ -94,9 +102,10 @@ def teacherRegister():
                 return redirect(url_for('main.home'))
         form = TeacherRegistrationForm()
         if form.validate_on_submit():
-                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated = False, email=form.email.data)
+                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=False, email_address=form.email_address.data)
                 user.set_password(form.password.data)
                 db.session.add(user)
+                reg_email(user)
                 db.session.commit()
                 user = User.query.filter_by(username=form.username.data).first()
 
@@ -109,17 +118,25 @@ def teacherRegister():
                 return redirect(url_for('main.login'))
         return render_template('teachreg.html', title='Register', form=form)
 
-
 @bp.route('/menu')
 def menu():
-        menuItems = MenuItem.query.all()
+        if current_user.is_authenticated:
+                if current_user.user_type == "Barista":
+                        return redirect(url_for('main.barista'))
+                elif current_user.user_type == "Admin":
+                        return redirect(url_for('main.a_addUser'))
 
+        menuItems = MenuItem.query.all()
         return render_template('menu.html', title='Menu', menuItems=menuItems)
 
 @bp.route('/customizeDrink/<drinkId>', methods=['GET', 'POST'])
 def custDrink(drinkId):
         if current_user.is_anonymous:
                 return redirect(url_for('main.login'))
+        elif current_user.user_type == "Barista":
+                return redirect(url_for('main.barista'))
+        elif current_user.user_type == "Admin":
+                return redirect(url_for('main.a_addUser'))
 
         form = CustomizeForm(drinkId)
         m = MenuItem.query.get(drinkId)
@@ -149,6 +166,11 @@ def myOrder(orderId):
 
         if current_user.is_anonymous:
                 return redirect(url_for('main.login'))
+        elif current_user.user_type == "Barista":
+                return redirect(url_for('main.barista'))
+        elif current_user.user_type == "Admin":
+                return redirect(url_for('main.a_addUser'))
+        
         order = Order.query.get(orderId)
         halfcaf = HalfCaf.query.get(1)
         form = OrderForm()
@@ -175,6 +197,10 @@ def myOrder(orderId):
 def favoriteDrinks():
         if current_user.is_anonymous:
                 return redirect(url_for('main.login'))
+        elif current_user.user_type == "Barista":
+                return redirect(url_for('main.barista'))
+        elif current_user.user_type == "Admin":
+                return redirect(url_for('main.a_addUser'))
 
 
         favDrinks = FavoriteDrink.query.filter_by(userId=current_user.id)
@@ -232,19 +258,28 @@ def barista():
                                         temp = Temp.query.get(d.temp_id)
                                         drink = (d.menuItem, temp.temp, d.decaf, d.flavors, d.inst) #added the inst thing
                                         drink_list.append(drink)
-
+                                        
                                 order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id)
                                 order_list.append(order)
-        print(order_list)
+        #print(order_list)
         if request.method == 'POST':
                 completed_order_id = request.form.get("complete_order")
                 completed_order = Order.query.get(completed_order_id)
                 completed_order.complete = True
+                
+                emailDrinkList  = []
+                for i in completed_order.drink:
+                        emailDrinkList.append(i.menuItem)
+
+                completed_teacher_id = completed_order.teacher_id
+                completed_teacher = User.query.filter_by(id = completed_teacher_id).first()
+               
+                order_email(completed_teacher.username, emailDrinkList, 'order ready!!', sender=app.config['ADMINS'][0], recipients=[completed_teacher.email_address])
+                
                 db.session.commit()
                 return redirect(url_for('main.barista'))
 
         return render_template('barista.html', title='Barista', order_list=order_list, form=form, order_time = store.acc_order)
-
 
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
 def baristaCompleted():
@@ -274,6 +309,7 @@ def baristaCompleted():
 
                                 order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id)
                                 order_list_complete.append(order)
+
         if request.method == 'POST':
                 completed_order_id = request.form.get("mark_incomplete")
                 completed_order = Order.query.get(completed_order_id)
@@ -281,9 +317,7 @@ def baristaCompleted():
                 db.session.commit()
                 return redirect(url_for('main.baristaCompleted'))
 
-
         return render_template('baristaCompleted.html', title='Completed Orders', order_list_complete=order_list_complete, form=form)
-
 
 @bp.route('/addUser', methods=['GET', 'POST'])
 def a_addUser():
@@ -475,6 +509,7 @@ def a_userDashboard():
 
 
         return render_template('a_userDashboard.html', title='User Dashboard', userDashboardForm=userDashboard)
+
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
