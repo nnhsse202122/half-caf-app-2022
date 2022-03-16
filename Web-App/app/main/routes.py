@@ -102,7 +102,7 @@ def teacherRegister():
                 return redirect(url_for('main.home'))
         form = TeacherRegistrationForm()
         if form.validate_on_submit():
-                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=False, email_address=form.email_address.data)
+                user = User(username=form.username.data, user_type=form.user_type.data, current_order_id=None, isActivated=False, email=form.email.data)
                 user.set_password(form.password.data)
                 db.session.add(user)
                 reg_email(user)
@@ -274,7 +274,7 @@ def barista():
                 completed_teacher_id = completed_order.teacher_id
                 completed_teacher = User.query.filter_by(id = completed_teacher_id).first()
                
-                order_email(completed_teacher.username, emailDrinkList, 'order ready!!', sender=app.config['ADMINS'][0], recipients=[completed_teacher.email_address])
+                order_email(completed_teacher.username, emailDrinkList, 'order ready!!', sender=app.config['ADMINS'][0], recipients=[completed_teacher.email])
                 
                 db.session.commit()
                 return redirect(url_for('main.barista'))

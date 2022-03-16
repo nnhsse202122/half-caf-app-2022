@@ -13,8 +13,8 @@ def order_email(name, order, subject, sender, recipients):
 
 def reg_email(user):
     msg = Message("Please activate new user", sender = 'nnhshalfcafapp@gmail.com', recipients = ['nnhshalfcafapp@gmail.com'])
-    msg.body = "username: " + user.username + " user type: " + user.user_type + " user email: " + user.email_address
-    msg.html = "<b> Username: </b>" + user.username + "<br> <b> User Type: </b>" + user.user_type + "<br><b> User Email Address: </b>"+ user.email_address
+    msg.body = "username: " + user.username + " user type: " + user.user_type + " user email: " + user.email
+    msg.html = "<b> Username: </b>" + user.username + "<br> <b> User Type: </b>" + user.user_type + "<br><b> User Email Address: </b>"+ user.email
     mail.send(msg)
 
 def send_password_reset_email(user):
