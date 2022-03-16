@@ -214,6 +214,7 @@ def barista():
         orders = Order.query.all()
         order_list = []
         order = ()
+        order_length = 0
         drink_list = []
         drink = ()
 
@@ -230,6 +231,8 @@ def barista():
 
                                 order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id)
                                 order_list.append(order)
+                                order_length = order_length+1                                
+
         print(order_list)
         if request.method == 'POST':
                 completed_order_id = request.form.get("complete_order")
@@ -239,7 +242,7 @@ def barista():
                 return redirect(url_for('main.barista'))
 
 
-        return render_template('barista.html', title='Barista', order_list=order_list, form=form)
+        return render_template('barista.html', title='Barista', order_list=order_list, form=form, order_length=order_length)
 
 
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
