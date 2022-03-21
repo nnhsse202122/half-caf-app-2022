@@ -16,6 +16,12 @@ def reg_email(user):
     msg.body = "username: " + user.username + " user type: " + user.user_type + " user email: " + user.email
     msg.html = "<b> Username: </b>" + user.username + "<br> <b> User Type: </b>" + user.user_type + "<br><b> User Email Address: </b>"+ user.email
     mail.send(msg)
+    
+def send_email(subject, sender, recipients, text_body, html_body):
+    msg = Message(subject, sender = sender, recipients = recipients)
+    msg.body = text_body
+    msg.html = html_body
+    mail.send(msg)
 
 def send_password_reset_email(user):
     token = user.get_reset_password_token()
