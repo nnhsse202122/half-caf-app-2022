@@ -14,8 +14,10 @@
           $(document).ready(function(){
             $(".notification_icon").click(function(){
               $(".dropdown").toggleClass("active");
+              $(".icon-button__badge").addClass("inactive");
             });
           });
+
         </script>
         <style>
 
@@ -54,10 +56,10 @@
 
             .notification_wrap .notification_icon .icon-button__badge {
               position: absolute;
-              top: -10px;
-              right: -10px;
-              width: 25px;
-              height: 25px;
+              top: -5px;
+              right: -5px;
+              width: 20px;
+              height: 20px;
               background: red;
               color: #ffffff;
               display: flex;
@@ -66,12 +68,16 @@
               border-radius: 50%;
             } 
 
+            .notification_wrap .notification_icon .icon-button__badge.inactive {
+              display: none;
+            }
+
             .notification_wrap .dropdown{
               width: 300px;
               height: auto;
               right: -780px;
               top: -170px;
-              background: #d3d3d3;
+              background: #e4e4e4;
               border-radius: 5px;
               position: relative;
               padding: 13px;
@@ -97,7 +103,7 @@
 	            left: 87%;
 	            transform: translateX(-50%);
             	border: 15px solid;
-            	border-color: transparent transparent #fff transparent;
+            	border-color: transparent transparent #e4e4e4 transparent;
             }
 
             .notification_wrap .dropdown.active{
@@ -203,7 +209,6 @@
         </table>
         </div>
     
-
         
     </body>
 
@@ -213,16 +218,16 @@
           <div class="notification_icon">
             <button type="button" class="icon-button">
               <span class="material-icons">notifications</span>
-              <span class="icon-button__badge">
-                {{order_length}}
-              </span>
+              {% if new_order %}
+                <span class="icon-button__badge"></span>
+              {% endif %}
             </button>
           </div>
           <div class="dropdown">
             <div class="notify_item">
               <div class="notify_info">
                 {% for o in order_list %}
-                  <p> room {{ o[2] }} {{ o[0] }} Just placed an order!</p>
+                  <p> room {{ o[2] }}, {{ o[0] }} just placed an order!</p>
                 {% endfor %}
               </div>
             </div>

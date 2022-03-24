@@ -18,6 +18,7 @@ class User(UserMixin, db.Model):
     order = db.relationship('Order', backref='teacher' , foreign_keys='[Order.teacher_id]')
     current_order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=True)
     user_type = db.Column(db.String(10), index=True)
+    last_order_read_time = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -30,6 +31,11 @@ class User(UserMixin, db.Model):
     
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode({'reset_password': self.id, 'exp': time() + expires_in}, app.config['SECRET_KEY'], algorithm='HS256')
+    
+    def new_orders(self):
+        last_read_time = self.last_order_read_time or datetime(1900, 1, 1)
+        return Order.query.filter_by(recipient=self).filter(
+        Order.timestamp > last_read_time).count()
     
     @staticmethod
     def verify_reset_password_token(token):

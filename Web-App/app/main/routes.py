@@ -1,3 +1,4 @@
+from operator import truediv
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app import db
@@ -214,9 +215,9 @@ def barista():
         orders = Order.query.all()
         order_list = []
         order = ()
-        order_length = 0
         drink_list = []
         drink = ()
+        new_order = False
 
         for o in orders:
                 drink_list = []
@@ -231,8 +232,7 @@ def barista():
 
                                 order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id)
                                 order_list.append(order)
-                                order_length = order_length+1                                
-
+                                new_order = True
         print(order_list)
         if request.method == 'POST':
                 completed_order_id = request.form.get("complete_order")
@@ -242,7 +242,7 @@ def barista():
                 return redirect(url_for('main.barista'))
 
 
-        return render_template('barista.html', title='Barista', order_list=order_list, form=form, order_length=order_length)
+        return render_template('barista.html', title='Barista', order_list=order_list, form=form, new_order=new_order)
 
 
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
