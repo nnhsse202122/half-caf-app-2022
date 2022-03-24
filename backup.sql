@@ -19,7 +19,11 @@ UNLOCK TABLES;
 
 
 LOCK TABLES `flavor` WRITE;
-INSERT INTO `flavor` VALUES (10,'Blue Raspberry'),(2,'Caramel'),(1,'None'),(11,'Cherry'),(5,'Chocolate'),(3,'Cinnamon bun'),(4,'Cocconut'),(12,'Cranberry'),(6,'French Vanilla'),(13,'Fruit Punch'),(7,'Hazelnut'),(8,'Peppermint'),(14,'Raspberry'),(15,'Raspberry Kiwi'),(16,'Strawberry'),(9,'Vanilla'),(17,'Watermelon');
+INSERT INTO `flavor` VALUES (10,'Blue Raspberry'),
+(2,'Caramel'),
+(1,'None'),
+(11,'Cherry'),
+(5,'Chocolate'),(3,'Cinnamon bun'),(4,'Cocconut'),(12,'Cranberry'),(6,'French Vanilla'),(13,'Fruit Punch'),(7,'Hazelnut'),(8,'Peppermint'),(14,'Raspberry'),(15,'Raspberry Kiwi'),(16,'Strawberry'),(9,'Vanilla'),(17,'Watermelon');
 UNLOCK TABLES;
 
 
