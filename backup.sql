@@ -26,7 +26,15 @@ UNLOCK TABLES;
 
 
 LOCK TABLES `menuItem` WRITE;
-INSERT INTO `menuItem` VALUES (1,'Black Coffee','Hot or iced, available in decaf',2,0),(2,'Cafe Mocha','Half coffee, half hot chocolate, all good',3,0),(3,'The Huskalatte','A velvety smooth, flavored drink',3,0),(4,'Spiced Apple Cider','A drink to warm your heart',2,0),(5,'The Huskaccino','Cool, icy, coffee slushy-what more could you want?',3,0),(6,'Hot Chocolate','Add a flavor and make it yours!',2,0),(7,'Chai Latte','A spicy, smooth, and soothing drink',3,0),(9,'Iced Tea','Sweet lemon tea served over ice',2,0),(10,'Huskie Palmer','A sweet blend of lemonade and iced tea over ice',2,0),(11,'Lemonade','Sweet and summery',2,0),(12,'Frozen Strawberry Lemonade','Frozen Lemonade with a twist',3,1),(13,'Polar Palmer','Frozen Huskie Palmer, with a sweet twist',3,0),(14,'Strawberry smoothie','',3,0),(15,'Wild berry Smoothie','',3,0),(16,'Mango Smoothie','',3,0),(17,'Chai Tea','A spicy, smooth, and soothing drink',3,0),(18,'Chamomile','A wonderful tea to calm down after a long day',2,0),(19,'Earl Grey Tea','The Mr. Schmit special',2,1),(20,'Green Tea','A nice cup of tasty tea',2,0),(21,'Black Tea','',2,0),(22,'Wild Berry Tea',' A fruity, warm delight',2,0),(23,'Peppermint Tea','Often called pepperminTEA',2,0),(24,'Orange Tea','',2,0),(25,'Raspberry Tea','A raspberry leaf tea',2,0);
+INSERT INTO `menuItem` VALUES (1,'Black Coffee','Hot or iced, available in decaf',2,0),
+(2,'Cafe Mocha','Half coffee, half hot chocolate, all good',3,0),
+(3,'The Huskalatte','Creamy coffee with flavor of choice',3,0),
+(4,'The Huskaccino','Cool, icy, coffee slushy-what more could you want?',3,0),
+(5,'Cold Brew','Try Vanilla Cream',2,0),
+(6,'Hot Chocolate','Add a flavor, available iced or frozen',2,0),
+(7,'Chai Tea Latte','A spicy, smooth, and soothing drink, available hot or iced',3,0),
+(8,'Iced Tea','Sweet lemon tea served over ice',2,0),(9,'Huskie Palmer','A sweet blend of lemonade and iced tea over ice. Available iced or frozen',2,0),(10,'Lemonade','Sweet and summery',2,0),(11,'Frozen Strawberry Lemonade','Frozen Lemonade with a twist',3,1),
+(12,'Black Tea','',2,0),(13,'Chai Tea','',3,0),(14,'Chamomile','',2,0),(15,'Earl Grey Tea','The Mr. Schmit special',2,1),(16,'English Breakfast','',2,0),(17,'Green Tea','',2,0),(18,'Lemon Tea','',2,0),(19,'Mint','',2,0);(20,'Orange Tea','',2,0),(21,'Peppermint Tea','Often called pepperminTEA',2,0);
 UNLOCK TABLES;
 
 LOCK TABLES `roomnum` WRITE;
@@ -45,16 +53,10 @@ INSERT INTO `drinksToFlavor` VALUES (1,'Black Coffee',1,'None',1),(2,'Black Coff
 (32,'Iced Tea',8,'None',1),
 (33,'Huskie Palmer',9,'None',1),
 (34,'Lemonade',10,'None',1), (35,'Lemonade',10,'Blue Raspberry',2),(36,'Lemonade',10,'Cherry',5),(37,'Lemonade',10,'Lavender',12),(38,'Lemonade',10,'Peach',13),(39,'Lemonade',10,'Raspberry',14),(40,'Lemonade',10,'Strawberry',15),(41,'Lemonade',10,'Watermelon',20),(42,'Frozen Strawberry Lemonade',11,'None',1),
-(43,'Black Tea',12,'None',1),
-(44,'Chai Tea',13,'None',1),
+(43,'Black Tea',12,'None',1),(44,'Chai Tea',13,'None',1),
 (45,'Chamomile Tea',14,'None',1),
 (46,'Earl Grey Tea',15,'None',1),
-(47,'English Breakfast Tea',16,'None',1),
-(48,'Green Tea',17,'None',1),
-(49,'Lemon Tea',18,'None',1),
-(50,'Mint Tea',19,'None',1),
-(51,'Orange Tea',20,'None',1),
-(52,'Peppermint Tea',21,'None',1);
+(47,'English Breakfast Tea',16,'None',1),(48,'Green Tea',17,'None',1),(49,'Lemon Tea',18,'None',1),(50,'Mint Tea',19,'None',1),(51,'Orange Tea',20,'None',1),(52,'Peppermint Tea',21,'None',1);
 UNLOCK TABLES;
 
 LOCK TABLES `HalfCaf` WRITE;
