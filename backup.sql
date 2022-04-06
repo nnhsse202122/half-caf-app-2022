@@ -34,7 +34,7 @@ INSERT INTO `menuItem` VALUES (1,'Black Coffee','Hot or iced, available in decaf
 (6,'Hot Chocolate','Add a flavor, available iced or frozen',2,0),
 (7,'Chai Tea Latte','A spicy, smooth, and soothing drink, available hot or iced',3,0),
 (8,'Iced Tea','Sweet lemon tea served over ice',2,0),(9,'Huskie Palmer','A sweet blend of lemonade and iced tea over ice. Available iced or frozen',2,0),(10,'Lemonade','Sweet and summery',2,0),(11,'Frozen Strawberry Lemonade','Frozen Lemonade with a twist',3,1),
-(12,'Black Tea','',2,0),(13,'Chai Tea','',3,0),(14,'Chamomile','',2,0),(15,'Earl Grey Tea','The Mr. Schmit special',2,1),(16,'English Breakfast','',2,0),(17,'Green Tea','',2,0),(18,'Lemon Tea','',2,0),(19,'Mint','',2,0),(20,'Orange Tea','',2,0),(21,'Peppermint Tea','Often called pepperminTEA',2,0);
+(12,'Black Tea','',2,0),(13,'Chai Tea','',3,0),(14,'Chamomile Tea','',2,0),(15,'Earl Grey Tea','The Mr. Schmit special',2,1),(16,'English Breakfast','',2,0),(17,'Green Tea','',2,0),(18,'Lemon Tea','',2,0),(19,'Mint','',2,0),(20,'Orange Tea','',2,0),(21,'Peppermint Tea','Often called pepperminTEA',2,0);
 UNLOCK TABLES;
 
 LOCK TABLES `roomnum` WRITE;
