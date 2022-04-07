@@ -17,6 +17,8 @@
               $(".icon-button__badge").addClass("inactive");
             });
           });
+          let c = document.getElementById("clicks")
+          c.addEventListener("click", e => {console.log(e)})
 
         </script>
         <style>
@@ -215,8 +217,8 @@
     <body>
       <div class="wrapper">
         <div class="notification_wrap">
-          <div class="notification_icon">
-            <button type="button" class="icon-button">
+          <div class="notification_icon" id="clicks">
+            <button type="button" class="icon-button" onclick="Date()">
               <span class="material-icons">notifications</span>
               {% if new_order %}
                 <span class="icon-button__badge"></span>
