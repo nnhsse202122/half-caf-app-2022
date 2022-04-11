@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 8d6f9deb47a2
-Revises: d4c7148662c3
-Create Date: 2022-03-21 20:05:41.929864
+Revision ID: 8b775898bb71
+Revises: f168cfbae486
+Create Date: 2022-03-22 19:56:38.897008
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision = '8d6f9deb47a2'
-down_revision = 'd4c7148662c3'
+revision = '8b775898bb71'
+down_revision = 'f168cfbae486'
 branch_labels = None
 depends_on = None
 
@@ -25,22 +25,6 @@ def upgrade():
     op.alter_column('drink', 'decaf',
                existing_type=mysql.TINYINT(display_width=1),
                type_=sa.Boolean(),
-               existing_nullable=True)
-    op.alter_column('drink', 'flavors',
-               existing_type=mysql.VARCHAR(length=25),
-               type_=sa.String(length=50),
-               existing_nullable=True)
-    op.alter_column('drink', 'menuItem',
-               existing_type=mysql.VARCHAR(length=25),
-               type_=sa.String(length=50),
-               existing_nullable=True)
-    op.alter_column('drinksToFlavor', 'drink',
-               existing_type=mysql.VARCHAR(length=25),
-               type_=sa.String(length=50),
-               existing_nullable=True)
-    op.alter_column('drinksToFlavor', 'flavor',
-               existing_type=mysql.VARCHAR(length=25),
-               type_=sa.String(length=50),
                existing_nullable=True)
     op.alter_column('favoriteDrinks', 'decaf',
                existing_type=mysql.TINYINT(display_width=1),
@@ -78,22 +62,6 @@ def downgrade():
     op.alter_column('favoriteDrinks', 'decaf',
                existing_type=sa.Boolean(),
                type_=mysql.TINYINT(display_width=1),
-               existing_nullable=True)
-    op.alter_column('drinksToFlavor', 'flavor',
-               existing_type=sa.String(length=50),
-               type_=mysql.VARCHAR(length=25),
-               existing_nullable=True)
-    op.alter_column('drinksToFlavor', 'drink',
-               existing_type=sa.String(length=50),
-               type_=mysql.VARCHAR(length=25),
-               existing_nullable=True)
-    op.alter_column('drink', 'menuItem',
-               existing_type=sa.String(length=50),
-               type_=mysql.VARCHAR(length=25),
-               existing_nullable=True)
-    op.alter_column('drink', 'flavors',
-               existing_type=sa.String(length=50),
-               type_=mysql.VARCHAR(length=25),
                existing_nullable=True)
     op.alter_column('drink', 'decaf',
                existing_type=sa.Boolean(),
