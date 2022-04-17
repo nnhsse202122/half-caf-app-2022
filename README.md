@@ -234,22 +234,10 @@ Harder things
 	`sudo rm /etc/nginx/sites-enabled/default`
 7. Create a reverse proxy for the Half Caf flask server. In the file /etc/nginx/sites-enabled/nnhshalfcaf:
 
-    server {
+```
+	server {
 		# listen on port 80 (http)
 		listen 80;
-		server_name nnhshalfcaf.com;
-		# not sure if the rest of this block is needed now that the nginx plugin is being used for certbot
-		location ~ /.well-known {
-			root /home/ubuntu/.well-known;
-		}
-    	location / {
-			# redirect any requests to the same URL but on https
-			return 301 https://$host$request_uri;
-		}
-	}
-	server {
-		# listen on port 443 (https)
-		listen 443 ssl;
 		server_name nnhshalfcaf.com;
 
 		# write access and error logs to /var/log
@@ -257,50 +245,39 @@ Harder things
 		error_log /var/log/nnhshalfcaf_error.log;
 
 		location / {
-			# forward application requests to the gunicorn server
+			# forward application requests to the node server
 			proxy_pass http://localhost:5000;
 			proxy_redirect off;
 			proxy_set_header Host $host;
 			proxy_set_header X-Real-IP $remote_addr;
 			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		}
-
-		#location /static {
-			# handle static files directly, without forwarding to the application
-		#    alias /home/ubuntu/microblog/app/static;
-		#    expires 30d;
-		#}
 	}
+```
+
 8. Restart the nginx server:
 	`sudo service nginx reload`
-9. [Install certbot](https://itnext.io/node-express-letsencrypt-generate-a-free-ssl-certificate-and-run-an-https-server-in-5-minutes-a730fbe528ca) to automate the generation and maintenance of SSL certificates so HTTPS works:
-	`sudo add-apt-repository ppa:certbot/certbot`
-	`sudo apt-get update`
-	`sudo apt-get install certbot python3-certbot-nginx`
-10. Generate an SSL certificate:
-	`sudo certbot --nginx`
-	*specify nnhshalfcaf.com as the domain name*
-16. [Generate SSH keys for GitHub](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent). Don't enter a passphrase.
-17. clone this repository from GitHub
-18. [Install docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) from its repository
-19. [Install docker compose](https://docs.docker.com/compose/install/).
-20. create the .env file in the Web-App folder:
-	`SECRET_KEY=<secret key>`
-	`DATABASE_URL=mysql+pymysql://halfcafmysql:<password>@db/nnhshalfcaf`
-21. From the local machine, copy the tar file to the EC2 instance:	
-	`scp -i half-caf-server.pem halfcafwebapp.tar ubuntu@<domain name>:/home/ubuntu/halfcafwebapp.tar`
-22. In the EC2 instance, load the image:
-	`cat halfcafwebapp.tar | sudo docker load`
-23. Then tag the image (use docker images to see all images and their IDs):
-	`sudo docker tag <image id> nnhsse/half-caf:<tag>`
-24. Edit the docker-compose.yml to refer to the tagged image. Replace:
-	`build: ./Web-App`
-	with:
-	`image: nnhsse/half-caf:<tag>`
-25. start the container for the database, building it from scratch, `sudo docker-compose up --build --force-recreate --renew-anon-volumes db`
-26. start the container for the webapp: `sudo docker-compose up webapp`
-27. initialize the database with default values:
-	`cat backup.sql | sudo docker exec -i half-caf-web-app_db_1 /usr/bin/mysql -u halfcafmysql --password=<password> nnhshalfcaf`
+9. Install and configure [certbot](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx)
+10. clone this repository from GitHub
+11. [Install docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) from its repository
+12. [Install docker compose](https://docs.docker.com/compose/install/).
+13. create the .env file in the Web-App folder:
+```
+	SECRET_KEY=<secret key>
+	DATABASE_URL=mysql+pymysql://halfcafmysql:<password>@db/nnhshalfcaf
+```
+14. Build and run the db container:
+```
+	sudo docker-compose up --build db
+```
+15. Build and run the webapp container:
+```
+	sudo docker-compose up --build webapp
+```
+16. Initialize the database:
+```
+	sudo cat /home/ubuntu/half-caf-app-2022/backup.sql | sudo docker exec -i half-caf-app-2022_db_1 /usr/bin/mysql -u root --password=<PASSWORD> nnhshalfcaf
+```
 
 
 #### Connecting to the EC2 Instance:
@@ -308,28 +285,18 @@ Harder things
 
 
 #### Updating code on the EC2 instance:
-1. Build the webapp image on the local development machine (not the EC2 instance):
-	`docker-compose build webapp`
-2. Save the built image:
-	`docker save <image name> > halfcafwebapp.tar`
-3. From the local machine, copy the tar file to the EC2 instance:	
-	`scp -i half-caf-server.pem halfcafwebapp.tar ubuntu@<domain name>:/home/ubuntu/halfcafwebapp.tar`
-4. In the EC2 instance, load the image:
-	`cat halfcafwebapp.tar | sudo docker load`
-5. Then tag the image (use docker images to see all images and their IDs):
-	`sudo docker tag <image id> nnhsse/half-caf:<tag>`
-6. On the EC2 instance discard changes to the docker-compose.ym file:
-	`git checkout -- docker-compose.yml`
-7. Pull the latest code from master:
-	`git pull`
-8. Re-edit the docker-compose.yml to refer to the tagged image. Replace:
-	`build: ./Web-App`
-	with:
-	`image: nnhsse/half-caf:<tag>`
-9. start the container for the database:
-	`sudo docker-compose up --build db`
-10. start the container for the webapp:
-	`sudo docker-compose up webapp`
+1. Pull the latest code from main:
+```
+	git pull
+```
+2. start the container for the database:
+```
+	sudo docker-compose up --build db
+```
+3. start the container for the webapp:
+```
+	sudo docker-compose up --build webapp
+```
 
 
 
