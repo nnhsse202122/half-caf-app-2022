@@ -221,18 +221,14 @@ Harder things
 
 #### Initial Setup:
 
-1. Build the webapp image on the local development machine (not the EC2 instance):
-	`docker-compose build webapp`
-2. Save the built image:
-	`docker save <image name> > halfcafwebapp.tar`
-3. Create an [AWS EC2 instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html) running an Ubuntu Server
+1. Create an [AWS EC2 instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html) running an Ubuntu Server
 	* don't change any of the default settings while stepping through the wizard except to add HTTP and HTTPS to the security group when stepping through the wizard
-4. Click the Connect button in the EC2 dashboard. Follow the instructions. You will need to have the private key in order to ssh into the instance.
-5. On the EC2 instance, install nginx:
+2. Click the Connect button in the EC2 dashboard. Follow the instructions. You will need to have the private key in order to ssh into the instance.
+3. On the EC2 instance, install nginx:
 	`sudo apt-get -y install nginx`
-6. Remove the default site:
+4. Remove the default site:
 	`sudo rm /etc/nginx/sites-enabled/default`
-7. Create a reverse proxy for the Half Caf flask server. In the file /etc/nginx/sites-enabled/nnhshalfcaf:
+5. Create a reverse proxy for the Half Caf flask server. In the file /etc/nginx/sites-enabled/nnhshalfcaf:
 
 ```
 	server {
@@ -255,26 +251,26 @@ Harder things
 	}
 ```
 
-8. Restart the nginx server:
+6. Restart the nginx server:
 	`sudo service nginx reload`
-9. Install and configure [certbot](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx)
-10. clone this repository from GitHub
-11. [Install docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) from its repository
-12. [Install docker compose](https://docs.docker.com/compose/install/).
-13. create the .env file in the Web-App folder:
+7. Install and configure [certbot](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx)
+8. clone this repository from GitHub
+9. [Install docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) from its repository
+10. [Install docker compose](https://docs.docker.com/compose/install/).
+11. create the .env file in the Web-App folder:
 ```
 	SECRET_KEY=<secret key>
 	DATABASE_URL=mysql+pymysql://halfcafmysql:<password>@db/nnhshalfcaf
 ```
-14. Build and run the db container:
+12. Build and run the db container:
 ```
 	sudo docker-compose up --build db
 ```
-15. Build and run the webapp container:
+13. Build and run the webapp container:
 ```
 	sudo docker-compose up --build webapp
 ```
-16. Initialize the database:
+14. Initialize the database:
 ```
 	sudo cat /home/ubuntu/half-caf-app-2022/backup.sql | sudo docker exec -i half-caf-app-2022_db_1 /usr/bin/mysql -u root --password=<PASSWORD> nnhshalfcaf
 ```
