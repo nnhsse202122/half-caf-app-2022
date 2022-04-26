@@ -3,6 +3,8 @@ Group Members: Nathan, Naglis, David, Aadi
 
 Group Members v2: Grace, Jessica, Kasey, Owen
 
+Group Members v3 (Best group): Divya, Hansheng, Krish, Sophia
+
 nnhshalfcaf.com
 
 
