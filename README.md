@@ -212,11 +212,9 @@ Easy things that could be improved with the website
 
 Harder things
 -improve funtionality of modify drinks page for all aspects of a drink not just flavors
--email/notification sent to admin when a user registers so that Mr.Skarr knows when to activate them
 -have a way to store information to show trends to Mr.Skarr of what people are buying
 -Potentially show inventory of specific ingredients and after each order is made baristas would be able to enter it, and Mr.Skarr would know when to buy more
--password reset option for teachers
--email/notification sent to barista when order is made
+-notification for barista when order is made
 
 
 ## Production Server
