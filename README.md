@@ -274,7 +274,31 @@ Harder things
 ```
 	sudo cat /home/ubuntu/half-caf-app-2022/backup.sql | sudo docker exec -i half-caf-app-2022_db_1 /usr/bin/mysql -u root --password=<PASSWORD> nnhshalfcaf
 ```
-
+15. On the EC2 instance, [install](https://github.com/nodesource/distributions/blob/master/README.md) Node.js v12:
+```
+curl -fsSL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+16. Install Production Manager 2, which is used to keep the node server running and restart it when changes are pushed to main:
+```
+sudo npm install pm2 -g
+sudo pm2 --name db start "docker-compose up --build db"
+sudo pm2 --name webapp start "docker-compose up --build webapp" --watch
+```
+17. Verify that the node server is running:
+```
+sudo pm2 list
+```
+18. Configure pm2 to automatically run when the EC2 instance restarts:
+```
+sudo pm2 startup
+```
+19. Add a crontab entry to pull from GitHub every 15 minutes:
+```
+crontab -e
+*/15 * * * * cd /home/ubuntu/half-caf-app-2022 && git pull
+```
+20. [Unlock Captcha](https://accounts.google.com/b/0/displayunlockcaptcha)
 
 #### Connecting to the EC2 Instance:
 1. Click the Connect button in the EC2 dashboard. Follow the instructions. You will need to have the private key in order to ssh into the instance.
