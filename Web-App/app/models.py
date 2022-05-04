@@ -18,7 +18,6 @@ class User(UserMixin, db.Model):
     order = db.relationship('Order', backref='teacher' , foreign_keys='[Order.teacher_id]')
     current_order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=True)
     user_type = db.Column(db.String(10), index=True)
-    last_order_read_time = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -49,6 +48,7 @@ class Order(db.Model):
     drink = db.relationship('Drink', backref='order', foreign_keys='[Drink.order_id]')
     roomnum_id = db.Column(db.Integer, db.ForeignKey('roomnum.id'), nullable=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    read = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     complete = db.Column(db.Boolean, index=True)
 
     def __repr__(self):

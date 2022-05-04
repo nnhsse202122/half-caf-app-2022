@@ -156,6 +156,7 @@ def myOrder(orderId):
         if request.method == 'POST' and order.drink != []:
                 order.roomnum_id = form.room.data
                 order.timestamp = datetime.datetime.now()
+                order.read = datetime.datetime.now()
                 db.session.commit()
 
                 new_order = Order(teacher_id=current_user.id)
@@ -217,7 +218,7 @@ def barista():
         order = ()
         drink_list = []
         drink = ()
-        new_order = False
+        new = False
 
         for o in orders:
                 drink_list = []
@@ -230,9 +231,16 @@ def barista():
                                         drink = (d.menuItem, temp.temp, d.decaf, d.flavors, d.inst) #added the inst thing
                                         drink_list.append(drink)
 
-                                order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id)
+                                order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id, o.read)
                                 order_list.append(order)
-                                new_order = True
+                                
+                                if o.timestamp >= o.read:
+                                        new = True
+                                        o.read = datetime.datetime.now()
+                                        db.session.commit()
+                                else:
+                                        new = False
+                                
         print(order_list)
         if request.method == 'POST':
                 completed_order_id = request.form.get("complete_order")
@@ -242,7 +250,7 @@ def barista():
                 return redirect(url_for('main.barista'))
 
 
-        return render_template('barista.html', title='Barista', order_list=order_list, form=form, new_order=new_order)
+        return render_template('barista.html', title='Barista', order_list=order_list, form=form, new_order=new)
 
 
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
