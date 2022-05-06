@@ -327,7 +327,7 @@ def a_addUser():
         addUser = A_AddUserForm()
 
         if request.method == 'POST':
-                user = User(username=addUser.username.data, user_type=addUser.user_type.data, isActivated=True)
+                user = User(username=addUser.username.data, user_type=addUser.user_type.data, email = addUser.user_email.data, isActivated=True)
                 user.set_password(addUser.password.data)
 
                 db.session.add(user)
