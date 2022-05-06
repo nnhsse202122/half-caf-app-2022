@@ -185,6 +185,7 @@ def myOrder(orderId):
                 new_order_id = Order.query.all()[-1].id
                 current_user.current_order_id=new_order_id
                 db.session.commit()
+                flash("Thank you for ordering from the Half-Caf!")
                 return redirect(url_for('main.myOrder', orderId=current_user.current_order_id))
         elif halfcaf.acc_order == False:
                 flash("This is not a time for ordering drinks ")
