@@ -228,7 +228,7 @@
           <div class="dropdown">
             <div class="notify_item">
               <div class="notify_info">
-                {% for o in order_list %}
+                {% for o in order_reverse %}
                   <p> room {{ o[2] }}, {{ o[0] }} just placed an order!</p>
                 {% endfor %}
               </div>
