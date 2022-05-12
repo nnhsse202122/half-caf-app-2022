@@ -47,6 +47,7 @@ class Order(db.Model):
     drink = db.relationship('Drink', backref='order', foreign_keys='[Drink.order_id]')
     roomnum_id = db.Column(db.Integer, db.ForeignKey('roomnum.id'), nullable=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    read = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     complete = db.Column(db.Boolean, index=True)
 
     def __repr__(self):

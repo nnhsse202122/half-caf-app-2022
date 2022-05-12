@@ -178,6 +178,7 @@ def myOrder(orderId):
         if request.method == 'POST' and order.drink != [] and halfcaf.acc_order==True:
                 order.roomnum_id = form.room.data
                 order.timestamp = datetime.datetime.now()
+                order.read = datetime.datetime.now()
                 db.session.commit()
                 new_order = Order(teacher_id=current_user.id)
                 db.session.add(new_order)
@@ -240,13 +241,13 @@ def barista():
         if current_user.is_anonymous or current_user.user_type != 'Barista':
                 return redirect(url_for('main.login'))
 
-        form = BaristaForm()
-        store = HalfCaf.query.get(1)
         orders = Order.query.all()
         order_list = []
+        order_reverse = []
         order = ()
         drink_list = []
         drink = ()
+        new = False
 
         for o in orders:
                 drink_list = []
@@ -258,9 +259,17 @@ def barista():
                                         temp = Temp.query.get(d.temp_id)
                                         drink = (d.menuItem, temp.temp, d.decaf, d.flavors, d.inst) #added the inst thing
                                         drink_list.append(drink)
-                                        
-                                order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id)
+
+                                order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id, o.read)
                                 order_list.append(order)
+                                order_reverse.insert(0, order)
+                                
+                                if o.timestamp >= o.read:
+                                        new = True
+                                        o.read = datetime.datetime.now()
+                                        db.session.commit()
+                                else:
+                                        new = False
         #print(order_list)
         if request.method == 'POST':
                 completed_order_id = request.form.get("complete_order")
