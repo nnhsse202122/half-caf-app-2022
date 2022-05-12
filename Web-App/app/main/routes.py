@@ -288,7 +288,7 @@ def barista():
                 db.session.commit()
                 return redirect(url_for('main.barista'))
 
-        return render_template('barista.html', title='Barista', order_list=order_list, form=form, order_time = store.acc_order)
+        return render_template('barista.html', title='Barista', order_list=order_list, form=form, order_time = store.acc_order, new_order=new, order_reverse = order_reverse)
 
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
 def baristaCompleted():
