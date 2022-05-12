@@ -215,6 +215,7 @@ def barista():
 
         orders = Order.query.all()
         order_list = []
+        order_reverse = []
         order = ()
         drink_list = []
         drink = ()
@@ -233,6 +234,7 @@ def barista():
 
                                 order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id, o.read)
                                 order_list.append(order)
+                                order_reverse.insert(0, order)
                                 
                                 if o.timestamp >= o.read:
                                         new = True
@@ -250,7 +252,7 @@ def barista():
                 return redirect(url_for('main.barista'))
 
 
-        return render_template('barista.html', title='Barista', order_list=order_list, form=form, new_order=new)
+        return render_template('barista.html', title='Barista', order_list=order_list, form=form, new_order=new, order_reverse = order_reverse)
 
 
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
