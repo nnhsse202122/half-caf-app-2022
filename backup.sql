@@ -1,5 +1,5 @@
 LOCK TABLES `user` WRITE;
-INSERT INTO `user` VALUES (1,1,'admin','pbkdf2:sha256:150000$amotRAQe$f90a9568ac168a8724c1db38e35c4af184062032e908823ba43f934b96183692','Admin',DEFAULT,'nnhshalfcafapp+1@gmail.com'),(2,1,'teacher','pbkdf2:sha256:150000$dEOnrXy7$2c4ab8e07c38cdc36452769354b8cf6c131f7397121f4ad0a0566f46a8ef3d2b','Teacher',DEFAULT,'nnhshalfcafapp+2@gmail.com'),(3,1,'barista','pbkdf2:sha256:150000$eNcME3qp$a9d0276a3a179ec59c55bd06913479ad2a7a677d88a4fa730b23e9faea0e9544','Barista',DEFAULT,'nnhshalfcafapp+3@gmail.com');
+INSERT INTO `user` VALUES (1,1,'admin','pbkdf2:sha256:150000$v58w2mPc$abbe6d2a7e9a77b946c8a7c6d00a46f12e0a2fe1e6accc8ceebf035091e993b9','Admin',DEFAULT,'nnhshalfcafapp+1@gmail.com'),(2,1,'teacher','pbkdf2:sha256:150000$TmrzCiMN$72176dd1a240f34116a78776c405e4b585514a95bf0ddcabae7ecdbc0d11e80a','Teacher',DEFAULT,'nnhshalfcafapp+2@gmail.com'),(3,1,'barista','pbkdf2:sha256:150000$TmrzCiMN$72176dd1a240f34116a78776c405e4b585514a95bf0ddcabae7ecdbc0d11e80a','Barista',DEFAULT,'nnhshalfcafapp+3@gmail.com');
 UNLOCK TABLES;
 
 LOCK TABLES `order` WRITE;
@@ -19,16 +19,22 @@ UNLOCK TABLES;
 
 
 LOCK TABLES `flavor` WRITE;
-INSERT INTO `flavor` VALUES (10,'Blue Raspberry'),
-(2,'Caramel'),
-(1,'None'),
-(11,'Cherry'),
-(5,'Chocolate'),(3,'Cinnamon bun'),(4,'Cocconut'),(12,'Cranberry'),(6,'French Vanilla'),(13,'Fruit Punch'),(7,'Hazelnut'),(8,'Peppermint'),(14,'Raspberry'),(15,'Raspberry Kiwi'),(16,'Strawberry'),(9,'Vanilla'),(17,'Watermelon');
+INSERT INTO `flavor` VALUES (1,'None'),(2,'Blue Raspberry'),(3,'Butterscotch'),(4,'Caramel'),(5,'Cherry'),(6,'Cinnamon Bun'),
+    (7,'Cane Sugar'),(8,'Cranberry'),(9,'French Vanilla'),(10,'Green Mint'),(11,'Hazelnut'),(12,'Lavender'),(13,'Peach'),
+    (14,'Raspberry'),(15,'Strawberry'),(16,'SF Caramel'),(17,'SF Vanilla'),(18,'SF Strawberry'),(19,'Vanilla'),(20,'Watermelon');
 UNLOCK TABLES;
 
 
 LOCK TABLES `menuItem` WRITE;
-INSERT INTO `menuItem` VALUES (1,'Black Coffee','Hot or iced, available in decaf',2,0),(2,'Cafe Mocha','Half coffee, half hot chocolate, all good',3,0),(3,'The Huskalatte','A velvety smooth, flavored drink',3,0),(4,'Spiced Apple Cider','A drink to warm your heart',2,0),(5,'The Huskaccino','Cool, icy, coffee slushy-what more could you want?',3,0),(6,'Hot Chocolate','Add a flavor and make it yours!',2,0),(7,'Chai Latte','A spicy, smooth, and soothing drink',3,0),(9,'Iced Tea','Sweet lemon tea served over ice',2,0),(10,'Huskie Palmer','A sweet blend of lemonade and iced tea over ice',2,0),(11,'Lemonade','Sweet and summery',2,0),(12,'Frozen Strawberry Lemonade','Frozen Lemonade with a twist',3,1),(13,'Polar Palmer','Frozen Huskie Palmer, with a sweet twist',3,0),(14,'Strawberry smoothie','',3,0),(15,'Wild berry Smoothie','',3,0),(16,'Mango Smoothie','',3,0),(17,'Chai Tea','A spicy, smooth, and soothing drink',3,0),(18,'Chamomile','A wonderful tea to calm down after a long day',2,0),(19,'Earl Grey Tea','The Mr. Schmit special',2,1),(20,'Green Tea','A nice cup of tasty tea',2,0),(21,'Black Tea','',2,0),(22,'Wild Berry Tea',' A fruity, warm delight',2,0),(23,'Peppermint Tea','Often called pepperminTEA',2,0),(24,'Orange Tea','',2,0),(25,'Raspberry Tea','A raspberry leaf tea',2,0);
+INSERT INTO `menuItem` VALUES (1,'Black Coffee','Hot or iced, available in decaf',2,0),
+(2,'Cafe Mocha','Half coffee, half hot chocolate, all good',3,0),
+(3,'The Huskalatte','Creamy coffee with flavor of choice',3,0),
+(4,'The Huskaccino','Cool, icy, coffee slushy-what more could you want?',3,0),
+(5,'Cold Brew','Try Vanilla Cream',2,0),
+(6,'Hot Chocolate','Add a flavor, available iced or frozen',2,0),
+(7,'Chai Tea Latte','A spicy, smooth, and soothing drink, available hot or iced',3,0),
+(8,'Iced Tea','Sweet lemon tea served over ice',2,0),(9,'Huskie Palmer','A sweet blend of lemonade and iced tea over ice. Available iced or frozen',2,0),(10,'Lemonade','Sweet and summery',2,0),(11,'Frozen Strawberry Lemonade','Frozen Lemonade with a twist',3,1),
+(12,'Black Tea','',2,0),(13,'Chai Tea','',3,0),(14,'Chamomile Tea','',2,0),(15,'Earl Grey Tea','The Mr. Schmit special',2,1),(16,'English Breakfast','',2,0),(17,'Green Tea','',2,0),(18,'Lemon Tea','',2,0),(19,'Mint Tea','',2,0),(20,'Orange Tea','',2,0),(21,'Peppermint Tea','Often called pepperminTEA',2,0);
 UNLOCK TABLES;
 
 LOCK TABLES `roomnum` WRITE;
@@ -36,7 +42,21 @@ INSERT INTO `roomnum` VALUES (1, '100'), (2, '101'), (3, '102'), (4, '103'), (5,
 UNLOCK TABLES; 
 
 LOCK TABLES `drinksToFlavor` WRITE;
-INSERT INTO `drinksToFlavor` VALUES (26,'Cafe Mocha',2,'None',1),(27,'Cafe Mocha',2,'Caramel',2),(28,'Cafe Mocha',2,'Cinnamon bun',3),(29,'Cafe Mocha',2,'Chocolate',5),(30,'Cafe Mocha',2,'French Vanilla',6),(31,'Cafe Mocha',2,'Hazelnut',7),(32,'Cafe Mocha',2,'Peppermint',8),(33,'Cafe Mocha',2,'Vanilla',9),(34,'The Huskalatte',3,'None',1),(35,'The Huskalatte',3,'Caramel',2),(36,'The Huskalatte',3,'Cinnamon bun',3),(37,'The Huskalatte',3,'Chocolate',5),(38,'The Huskalatte',3,'French Vanilla',6),(39,'The Huskalatte',3,'Hazelnut',7),(40,'The Huskalatte',3,'Peppermint',8),(41,'The Huskalatte',3,'Vanilla',9),(42,'Spiced Apple Cider',4,'None',1),(49,'The Huskaccino',5,'None',1),(50,'The Huskaccino',5,'Caramel',2),(51,'The Huskaccino',5,'Cinnamon bun',3),(52,'The Huskaccino',5,'Chocolate',5),(53,'The Huskaccino',5,'French Vanilla',6),(54,'The Huskaccino',5,'Hazelnut',7),(55,'The Huskaccino',5,'Vanilla',9),(56,'Hot Chocolate',6,'None',1),(57,'Hot Chocolate',6,'Caramel',2),(58,'Hot Chocolate',6,'Cinnamon bun',3),(59,'Hot Chocolate',6,'French Vanilla',6),(60,'Hot Chocolate',6,'Hazelnut',7),(61,'Hot Chocolate',6,'Peppermint',8),(62,'Hot Chocolate',6,'Vanilla',9),(63,'Chai Latte',7,'None',1),(64,'Iced Tea',9,'None',1),(65,'Huskie Palmer',10,'None',1),(67,'Lemonade',11,'None',1),(68,'Polar Palmer',13,'None',1),(69,'Strawberry smoothie',14,'None',1),(70,'Wild berry Smoothie',15,'None',1),(71,'Mango Smoothie',16,'None',1),(72,'Chai Tea',17,'None',1),(73,'Chamomile',18,'None',1),(74,'Earl Grey Tea',19,'None',1),(75,'Green Tea',20,'None',1),(77,'Black Tea',21,'None',1),(78,'Wild Berry Tea',22,'None',1),(79,'Peppermint Tea',23,'None',1),(80,'Orange Tea',24,'None',1),(81,'Raspberry Tea',25,'None',1),(82,'Black Coffee',1,'None',1),(83,'Black Coffee',1,'Caramel',2),(84,'Black Coffee',1,'Chocolate',5),(85,'Black Coffee',1,'French Vanilla',6),(86,'Black Coffee',1,'Hazelnut',7),(87,'Black Coffee',1,'Peppermint',8),(88,'Black Coffee',1,'Vanilla',9);
+INSERT INTO `drinksToFlavor` VALUES (1,'Black Coffee',1,'None',1),(2,'Black Coffee',1,'Caramel',4), (3,'Black Coffee',1,'French Vanilla',9), (4,'Black Coffee',1,'Hazelnut',11), (5,'Black Coffee',1,'Vanilla',19),
+(6,'Cafe Mocha',2,'None',1), (7,'Cafe Mocha',2,'Caramel',4), (8,'Cafe Mocha',2,'Cinnamon bun',6), (9,'Cafe Mocha',2,'French Vanilla',9), (10,'Cafe Mocha',2,'Hazelnut',11), (11,'Cafe Mocha',2,'Vanilla',19),
+(12,'The Huskalatte',3,'None',1), (13,'The Huskalatte',3,'Caramel',4), (14,'The Huskalatte',3,'Cinnamon bun',6), (15,'The Huskalatte',3,'French Vanilla',9), (16,'The Huskalatte',3,'Hazelnut',11), (17,'The Huskalatte',3,'Vanilla',19),
+(18,'The Huskaccino',4,'None',1), (19,'The Huskaccino',4,'Caramel',4), (20,'The Huskaccino',4,'Cinnamon bun',6), (21,'The Huskaccino',4,'French Vanilla',9),
+(22,'The Huskaccino',4,'Hazelnut',11), (23,'The Huskaccino',4,'Vanilla',19),
+(24,'Cold Brew',5,'Vanilla',19),
+(25,'Hot Chocolate',6,'None',1), (26,'Hot Chocolate',6,'Caramel',4), (27,'Hot Chocolate',6,'Cinnamon bun',6),(28,'Hot Chocolate',6,'French Vanilla',9),(29,'Hot Chocolate',6,'Hazelnut',11), (30,'Hot Chocolate',6,'Vanilla',19),
+(31,'Chai Latte',7,'None',1),
+(32,'Iced Tea',8,'None',1),
+(33,'Huskie Palmer',9,'None',1),
+(34,'Lemonade',10,'None',1), (35,'Lemonade',10,'Blue Raspberry',2),(36,'Lemonade',10,'Cherry',5),(37,'Lemonade',10,'Lavender',12),(38,'Lemonade',10,'Peach',13),(39,'Lemonade',10,'Raspberry',14),(40,'Lemonade',10,'Strawberry',15),(41,'Lemonade',10,'Watermelon',20),(42,'Frozen Strawberry Lemonade',11,'None',1),
+(43,'Black Tea',12,'None',1),(44,'Chai Tea',13,'None',1),
+(45,'Chamomile Tea',14,'None',1),
+(46,'Earl Grey Tea',15,'None',1),
+(47,'English Breakfast Tea',16,'None',1),(48,'Green Tea',17,'None',1),(49,'Lemon Tea',18,'None',1),(50,'Mint Tea',19,'None',1),(51,'Orange Tea',20,'None',1),(52,'Peppermint Tea',21,'None',1);
 UNLOCK TABLES;
 
 LOCK TABLES `HalfCaf` WRITE;

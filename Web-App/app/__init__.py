@@ -43,7 +43,7 @@ if True:
         app.logger.setLevel(logging.DEBUG)
         app.logger.info('HalfCaf startup')
 
-if not app.debug:
+if app.debug:
     if app.config['MAIL_SERVER']:
         auth = None
         if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:

@@ -132,8 +132,10 @@ class A_UserDashboardForm(FlaskForm):
 class A_AddUserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-
+    
+    user_email = StringField('Email Address', validators=[DataRequired(), Email()])
     user_type = SelectField(u'User Type', choices=[('Teacher', 'Teacher'), ('Barista', 'Barista'), ('Admin', 'Admin')])
+    
     submit = SubmitField('Add User')
 
     def validate_username(self, username):
