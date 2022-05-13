@@ -241,6 +241,8 @@ def barista():
         if current_user.is_anonymous or current_user.user_type != 'Barista':
                 return redirect(url_for('main.login'))
 
+        form = BaristaForm()
+        store = HalfCaf.query.get(1)
         orders = Order.query.all()
         order_list = []
         order_reverse = []
