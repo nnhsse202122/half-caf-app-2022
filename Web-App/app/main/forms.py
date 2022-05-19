@@ -85,12 +85,6 @@ class FavoriteDrinksForm(FlaskForm):
             counter+=1
 
         
-            
-        
-            
-        
-        
-
 
 class OrderForm(FlaskForm):
     room = SelectField(u'Room Number:', coerce=int, validators=[DataRequired()])
@@ -105,6 +99,8 @@ class OrderForm(FlaskForm):
 class BaristaForm(FlaskForm):
 
     clear_completed_orders = SubmitField(u'Complete Orders')
+
+    
 
 class A_UserDashboardForm(FlaskForm):
     submitActivate = SubmitField('Activate Users')
@@ -136,8 +132,10 @@ class A_UserDashboardForm(FlaskForm):
 class A_AddUserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-
+    
+    user_email = StringField('Email Address', validators=[DataRequired(), Email()])
     user_type = SelectField(u'User Type', choices=[('Teacher', 'Teacher'), ('Barista', 'Barista'), ('Admin', 'Admin')])
+    
     submit = SubmitField('Add User')
 
     def validate_username(self, username):

@@ -117,12 +117,10 @@
               color: #104fb5;
             }
         </style>
-
     </head>
     <body>
-       
+        
         <h1> NNHS Half Caf Barista</h1>
-
         {% block navbar %}
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -132,21 +130,27 @@
             <ul class="navbar-nav">
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.barista') }}">Orders</a>
-
                   </li>
-
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.baristaCompleted') }}">Completed Orders</a>
                   </li>
-                  
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
                   </li>
+                  {% if order_time %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.disable') }}">Disable</a>
+                  </li>
+                  {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.enable') }}">Enable</a>
+                  </li>           
+                  {% endif %}       
             </ul>
+            
           </div>
         </nav>
         {% endblock %}
-
         <div>
         <table class="table table-striped">
           <thead>
@@ -193,15 +197,11 @@
                 {% endfor %}</th>
               <th scope="col">
                 {% for d in o[1] %}
-                
                     <p> {{ d[3] }} </p>
-                        
                 {% endfor %}</th>
               <th scope="col">
                 {% for d in o[1] %}
-
                 <p> {{ d[4] }}  </p>
-
                 {% endfor %}</th>
               <th scope="col"> <p> {{ o[3] }} </p> </th>
               <th scope="col"> <form action="" method="post" novalidate>

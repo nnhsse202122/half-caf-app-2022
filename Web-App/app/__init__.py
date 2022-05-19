@@ -14,7 +14,7 @@ from flask_mail import Mail
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
-migrate = Migrate(app,db)
+migrate = Migrate(app,db, compare_type=True)
 login = LoginManager(app)
 login.login_view = 'main.login'
 bootstrap = Bootstrap(app)
@@ -43,7 +43,7 @@ if True:
         app.logger.setLevel(logging.DEBUG)
         app.logger.info('HalfCaf startup')
 
-if not app.debug:
+if app.debug:
     if app.config['MAIL_SERVER']:
         auth = None
         if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
@@ -57,3 +57,5 @@ if not app.debug:
             toaddrs=app.config['ADMINS'], subject='Half Caf App Error', credentials=auth, secure=secure)
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
+
+

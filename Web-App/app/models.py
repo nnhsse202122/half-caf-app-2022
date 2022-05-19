@@ -91,10 +91,10 @@ class RoomNum(db.Model):
 class Drink(db.Model):
     __tablename__ = 'drink'
     id = db.Column(db.Integer, primary_key=True)
-    menuItem = db.Column(db.String(25), index=True)
+    menuItem = db.Column(db.String(50), index=True)
     temp_id = db.Column(db.Integer, db.ForeignKey('temp.id'), nullable=False)
     decaf = db.Column(db.Boolean, index=True, default=False)
-    flavors = db.Column(db.String(25), index=True)
+    flavors = db.Column(db.String(50), index=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=True)
     inst = db.Column(db.String(150), index=True)
 
@@ -104,9 +104,9 @@ class Drink(db.Model):
 class DrinksToFlavor(db.Model):
     __tablename__ = 'drinksToFlavor'
     id = db.Column(db.Integer, primary_key=True)
-    drink = db.Column(db.String(25), index=True)
+    drink = db.Column(db.String(50), index=True)
     drinkId = db.Column(db.Integer, index=True)
-    flavor = db.Column(db.String(25), index=True) #also might want to make this the id
+    flavor = db.Column(db.String(50), index=True) #also might want to make this the id
     flavorId = db.Column(db.Integer, db.ForeignKey('flavor.id'), index=True)
 
     def __repr__(self):
@@ -121,3 +121,9 @@ class FavoriteDrink(db.Model):
     tempId = db.Column(db.Integer, db.ForeignKey('temp.id'))
     decaf = db.Column(db.Boolean, index=True, default=False)
     flavorId = db.Column(db.Integer, db.ForeignKey('flavor.id'), index=True)
+
+
+class HalfCaf(db.Model):
+    __tablename__ = 'HalfCaf'
+    id = db.Column(db.Integer, primary_key=True)
+    acc_order =db.Column(db.Boolean, index=True, default=True)

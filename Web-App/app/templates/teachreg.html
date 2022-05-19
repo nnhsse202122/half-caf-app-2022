@@ -21,7 +21,7 @@
             color: #333333;
             margin: auto;
             overflow: hidden;
-            padding: 100px 0;
+            padding: 60px 0;
             align-items: center;
             justify-content: space-around;
             display: flex;
@@ -63,6 +63,16 @@
             <span style="color: red;"[{{ error }}]</span>
             {% endfor %}
         </p>
+
+        <!-- added new below-->
+        <!-- <p>
+            {{ form.email.label }}<br>
+            {{ form.email(size=32) }}<br>
+            {% for error in form.email.errors %}
+            <span style="color: red;"[{{ error }}]</span>
+            {% endfor %}
+        </p> -->
+        
         <p hidden>
             {{ form.user_type }}
         </p>
