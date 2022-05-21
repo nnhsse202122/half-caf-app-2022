@@ -74,6 +74,9 @@ class Example(db.Model):
     def __repr__(self):
             return '<Example {}>'.format(self.name)
 ```
+### Migrations
+Whenever you make a change to the database, you will notice a new file is automatically generated in the /migrations/versions folder. 
+This is a database migration, which "upgrades" the existing database structure to incorporate your changes (instead of, for example, a system that entirely wipes and regenerates the database whenever a change is made.) If you make a change to the models.py file, and end up with new migrations on your branch, make sure to compare them to the migrations in the main branch, and also confirm that the migrations in your branch refer to each other linearly with no loops or splitting. This will prevent painful merge conflicts occur when you pull.    
 
 ### Routes
 Each function in the routes.py file is a view function. View functions are basically the code that the page you are viewing is running on.
@@ -208,13 +211,15 @@ If you get locked out, start here.
 
 ## Moving Forward… 
 Easy things that could be improved with the website
--Styling, it is a very basic look right now and with some added CSS and bootstrap it can look pretty great (add logo)
+- Styling, it is a very basic look right now and with some added CSS and bootstrap it can look pretty great (add logo)
 
 Harder things
--improve funtionality of modify drinks page for all aspects of a drink not just flavors
--have a way to store information to show trends to Mr.Skarr of what people are buying
--Potentially show inventory of specific ingredients and after each order is made baristas would be able to enter it, and Mr.Skarr would know when to buy more
--notification for barista when order is made
+- improve funtionality of modify drinks page for all aspects of a drink not just flavors
+- have a way to store information to show trends to Mr.Skarr of what people are buying
+- Potentially show inventory of specific ingredients and after each order is made baristas would be able to enter it, and Mr.Skarr would know when to buy more
+- notification for barista when order is made
+
+See Trello for more details
 
 
 ## Production Server
