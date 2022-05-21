@@ -479,7 +479,7 @@ Initializes container that includes both Dockerfile and database
 
 * Container  name: webapp
 
-* Root password: halfcafwebappadmins123
+* Root password: [see Mr. Schmit]
 
 **Init.sql**
 
@@ -489,9 +489,9 @@ Creates and Initializes database
 
 Creates and grants all privileges to user
 
-	Username: halfcafmysql
+	Username: [see Mr. Schmit]
 
-	Password: halfcafwebappadmins123
+	Password: [see Mr. Schmit]
 
 **Dockerfile**
 
@@ -503,9 +503,14 @@ RUN: runs files
 
 **.env**
 
-Creates a secret key and initializes database url
+Creates a secret key, initializes database url, and configures flask mail.
 
-DATABASE_URL=mysql+pymysql://username:password@db/databasename
+	DATABASE_URL=mysql+pymysql://username:password@db/databasename
+	MAIL_SERVER=smtp.googlemail.com
+	MAIL_PORT=587
+	MAIL_USE_TLS=1
+	MAIL_USERNAME= [see Mr. Schmit]
+	MAIL_PASSWORD= [see Mr. Schmit]
 
 Accessed through config.py
 
