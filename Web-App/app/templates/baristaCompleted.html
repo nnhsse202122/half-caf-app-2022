@@ -42,6 +42,15 @@
                     <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
                   </li>
 
+                  {% if order_time %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.disable') }}">Disable</a>
+                  </li>
+                  {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.enable') }}">Enable</a>
+                  </li>           
+                  {% endif %}   
                   
             </ul>
           </div>

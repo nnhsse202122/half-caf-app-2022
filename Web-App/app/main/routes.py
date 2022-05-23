@@ -293,7 +293,7 @@ def barista():
                 return redirect(url_for('main.barista'))
 
 
-        return render_template('barista.html', title='Barista', order_list=order_list, form=form, new_order=new, order_reverse = order_reverse)
+        return render_template('barista.html', title='Barista', order_list=order_list, form=form, new_order=new, order_reverse = order_reverse, order_time = store.acc_order)
 
 
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
@@ -308,6 +308,7 @@ def baristaCompleted():
         order = ()
         drink_list = []
         drink = ()
+        store = HalfCaf.query.get(1)
 
         order_list_complete = []
 
@@ -332,7 +333,7 @@ def baristaCompleted():
                 db.session.commit()
                 return redirect(url_for('main.baristaCompleted'))
 
-        return render_template('baristaCompleted.html', title='Completed Orders', order_list_complete=order_list_complete, form=form)
+        return render_template('baristaCompleted.html', title='Completed Orders', order_list_complete=order_list_complete, form=form, order_time = store.acc_order)
 
 @bp.route('/addUser', methods=['GET', 'POST'])
 def a_addUser():
