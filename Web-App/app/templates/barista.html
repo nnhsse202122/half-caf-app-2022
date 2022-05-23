@@ -15,10 +15,11 @@
             $(".notification_icon").click(function(){
               $(".dropdown").toggleClass("active");
               $(".icon-button__badge").addClass("inactive");
+              console.log("test text");
             });
           });
-          let c = document.getElementById("clicks")
-          c.addEventListener("click", e => {console.log(e)})
+          // let c = document.getElementById("clicks")
+          // c.addEventListener("click", e => {console.log(e)})
 
         </script>
         <style>
@@ -77,8 +78,8 @@
             .notification_wrap .dropdown{
               width: 300px;
               height: auto;
-              right: -780px;
-              top: -170px;
+              right: 5px;
+              top: 135px;
               background: #e4e4e4;
               border-radius: 5px;
               position: relative;
