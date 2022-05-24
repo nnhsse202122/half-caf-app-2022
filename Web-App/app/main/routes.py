@@ -1,3 +1,4 @@
+from operator import truediv
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app import db
@@ -178,6 +179,7 @@ def myOrder(orderId):
         if request.method == 'POST' and order.drink != [] and halfcaf.acc_order==True:
                 order.roomnum_id = form.room.data
                 order.timestamp = datetime.datetime.now()
+                order.read = datetime.datetime.now()
                 db.session.commit()
                 new_order = Order(teacher_id=current_user.id)
                 db.session.add(new_order)
@@ -244,9 +246,11 @@ def barista():
         store = HalfCaf.query.get(1)
         orders = Order.query.all()
         order_list = []
+        order_reverse = []
         order = ()
         drink_list = []
         drink = ()
+        new = False
 
         for o in orders:
                 drink_list = []
@@ -258,10 +262,19 @@ def barista():
                                         temp = Temp.query.get(d.temp_id)
                                         drink = (d.menuItem, temp.temp, d.decaf, d.flavors, d.inst) #added the inst thing
                                         drink_list.append(drink)
-                                        
-                                order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id)
+
+                                order = (teacher.username, drink_list, roomnum.num, o.timestamp.strftime("%Y-%m-%d at %H:%M"), o.id, o.read)
                                 order_list.append(order)
-        #print(order_list)
+                                order_reverse.insert(0, order)
+                                
+                                if o.timestamp >= o.read:
+                                        new = True
+                                        o.read = datetime.datetime.now()
+                                        db.session.commit()
+                                else:
+                                        new = False
+                                
+        print(order_list)
         if request.method == 'POST':
                 completed_order_id = request.form.get("complete_order")
                 completed_order = Order.query.get(completed_order_id)
@@ -279,7 +292,9 @@ def barista():
                 db.session.commit()
                 return redirect(url_for('main.barista'))
 
-        return render_template('barista.html', title='Barista', order_list=order_list, form=form, order_time = store.acc_order)
+
+        return render_template('barista.html', title='Barista', order_list=order_list, form=form, new_order=new, order_reverse = order_reverse, order_time = store.acc_order)
+
 
 @bp.route('/baristaCompleted', methods=['GET', 'POST'])
 def baristaCompleted():
@@ -293,6 +308,7 @@ def baristaCompleted():
         order = ()
         drink_list = []
         drink = ()
+        store = HalfCaf.query.get(1)
 
         order_list_complete = []
 
@@ -317,7 +333,7 @@ def baristaCompleted():
                 db.session.commit()
                 return redirect(url_for('main.baristaCompleted'))
 
-        return render_template('baristaCompleted.html', title='Completed Orders', order_list_complete=order_list_complete, form=form)
+        return render_template('baristaCompleted.html', title='Completed Orders', order_list_complete=order_list_complete, form=form, order_time = store.acc_order)
 
 @bp.route('/addUser', methods=['GET', 'POST'])
 def a_addUser():

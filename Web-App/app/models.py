@@ -31,6 +31,7 @@ class User(UserMixin, db.Model):
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode({'reset_password': self.id, 'exp': time() + expires_in}, app.config['SECRET_KEY'], algorithm='HS256')
     
+    
     @staticmethod
     def verify_reset_password_token(token):
         try:
@@ -47,6 +48,7 @@ class Order(db.Model):
     drink = db.relationship('Drink', backref='order', foreign_keys='[Drink.order_id]')
     roomnum_id = db.Column(db.Integer, db.ForeignKey('roomnum.id'), nullable=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    read = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     complete = db.Column(db.Boolean, index=True)
 
     def __repr__(self):

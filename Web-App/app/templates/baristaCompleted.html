@@ -8,10 +8,12 @@
         <title> {{ title }} </title>
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        
         <style>
-        body{margin: 10px;
-             color: #104fb5;
+          body{margin: 10px;
+              color: #104fb5;
             }
         </style>
 
@@ -39,6 +41,17 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
                   </li>
+
+                  {% if order_time %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.disable') }}">Disable</a>
+                  </li>
+                  {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.enable') }}">Enable</a>
+                  </li>           
+                  {% endif %}   
+                  
             </ul>
           </div>
         </nav>
@@ -99,4 +112,5 @@
 
         
     </body>
+
 {% endblock %}
