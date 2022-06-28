@@ -76,7 +76,9 @@ class Example(db.Model):
 ```
 ### Migrations
 Whenever you make a change to the database, you will notice a new file is automatically generated in the /migrations/versions folder. 
-This is a database migration, which "upgrades" the existing database structure to incorporate your changes (instead of, for example, a system that entirely wipes and regenerates the database whenever a change is made.) If you make a change to the models.py file, and end up with new migrations on your branch, make sure to compare them to the migrations in the main branch, and also confirm that the migrations in your branch refer to each other linearly with no loops or splitting. This will prevent painful merge conflicts occur when you pull.    
+This is a database migration, which "upgrades" the existing database structure to incorporate your changes (instead of, for example, a system that entirely wipes and regenerates the database whenever a change is made.) If you make a change to the models.py file, and end up with new migrations on your branch, make sure to compare them to the migrations in the main branch, and also confirm that the migrations in your branch refer to each other linearly with no loops or splitting. This will prevent painful merge conflicts occur when you pull.
+
+In addition, before pulling a branch into main that has modified the schema, check if multiple migration files have been created. If so, delete all new migration files and regenerate a single migration file. The benefit of this practice is that it minimizes the number of migration files to only those that are required.  
 
 ### Routes
 Each function in the routes.py file is a view function. View functions are basically the code that the page you are viewing is running on.
