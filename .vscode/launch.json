@@ -1,0 +1,17 @@
+{
+    "configurations": [
+      {
+        "name": "Flask App Debugee",
+        "type": "python",
+        "request": "attach",
+        "port": 5678,
+        "host": "0.0.0.0",
+        "pathMappings": [
+          {
+            "localRoot": "${workspaceFolder}/Web-App",
+            "remoteRoot": "/home/half-caf-web-app"
+          }
+        ]
+      }
+   ]
+}

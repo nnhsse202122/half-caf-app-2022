@@ -18,32 +18,15 @@ Create a schedule and stick to it (google calendar is a great tool for this). Wh
 
 Use pair programming to your advantage. Just because it may seem faster to divide and conquer in terms of being able to get tasks done doesnt mean it necessarily is. Having a second set of eyes to catch errors and talk things through with can be extremely beneficial and save you tons of time in the long run.
 
-## Virtual environments
+## Quickstart
 
-Know how to create virtual environments. A virtual environment is essential because it isolates the Flask downloads from the rest of the computer files. This ultimately prevents countless problems from occurring. Always do your Flask related downloads in a virtual environment and run the app in the virtual environment. Make your virtual enviroment in the Web-App directory.
-
-```
-	For MacOS
-$ python3 -m venv venv
-$ source venv/bin/activate
-	For Windows
-$ python -m venv venv
-$ venv\Scripts\activate     
-```
-
-The first line of code is run once when you first clone the repository to your computer. Run the second line of code to activate the virtual environment on your computer every new terminal window.
-Your tutorial goes into specifics, only use this page for quick and easy access to those lines of code. Be sure to look into the specifics of virtual environments in your tutorial.
-
-once in your virtual enviroment, type the following in your command line:
+From a terminal in VS Code, in the root directory of this repository, run the following:
 
 ```
-docker-compose up --build db
-docker-compose up --build webapp
+docker compose up
 ```
 
-the first of these 2 lines of code must be run every time something is changed in the database. The second line is used every time you would like to run the web app.
-
-After running it, proceed to your browser and go to "localhost" to see the running webapp.
+After running it, proceed to your browser and go to "localhost:5000" to see the running webapp.
 
 ## Git
 
@@ -74,8 +57,10 @@ class Example(db.Model):
     def __repr__(self):
             return '<Example {}>'.format(self.name)
 ```
+
 ### Migrations
 Whenever you make a change to the database, you will notice a new file is automatically generated in the /migrations/versions folder. 
+
 This is a database migration, which "upgrades" the existing database structure to incorporate your changes (instead of, for example, a system that entirely wipes and regenerates the database whenever a change is made.) If you make a change to the models.py file, and end up with new migrations on your branch, make sure to compare them to the migrations in the main branch, and also confirm that the migrations in your branch refer to each other linearly with no loops or splitting. This will prevent painful merge conflicts occur when you pull.
 
 In addition, before pulling a branch into main that has modified the schema, check if multiple migration files have been created. If so, delete all new migration files and regenerate a single migration file. The benefit of this practice is that it minimizes the number of migration files to only those that are required.  
@@ -141,38 +126,41 @@ If you don't want to style the whole page and only certain elements within the p
 	
 ## Docker
 
-Docker is the shell-like container that holds the webapp so that we can easily deploy it onto Amazon Web Services. However, we have two main docker containers that we are combining using docker-compose. You shouldn't have to modify the docker container files at all unless additional features added somehow interfere. However, when you add new code to your local machine, you need to migrate the code to the database container by using the command docker db migrate (if changes are made to the db). Instead of using flask run to run the program, you will now run the changes that you made through the docker container using docker-compose up --build when starting your machine or after making changes. If you have already run this command but want to rerun it, you can use docker-compose up to run it quicker. Then upload the newly made changes from the docker container into AWS. You will need to reference Mr.Schmit for this part.
+Docker is the shell-like container that holds the webapp so that we can easily deploy it onto Amazon Web Services. However, we have three main docker containers that we are combining using docker-compose. You shouldn't have to modify the docker container files at all unless additional features added somehow interfere. However, when you add new code to your local machine, you need to migrate the code to the database container by using the command docker db migrate (if changes are made to the db). Instead of using flask run to run the program, you will now run the changes that you made through the docker container using docker compose up --build when starting your machine or after making changes. If you have already run this command but want to rerun it, you can use docker compose up to run it quicker. Then upload the newly made changes from the docker container into AWS. You will need to reference Mr.Schmit for this part.
 
 Essential lines of code include:
 
 - STARTING APP (WHEN YOU FIRST LOG ON)
 Run each command in a different terminal window (do not have to be in your virtual  environment)
+
+- Start all three containers in development mode (database, phpMyAdmin, flask app)
 	```
-	docker-compose up --build db 
-	docker-compose up --build webapp
+	docker compose -f docker-compose.yml -f docker-compose.debug.yml up --build
 	```
+
+- Rebuild and restart just the webapp container (usually this is not needed when making changes)
+  ```
+  docker compose -f docker-compose.yml -f docker-compose.debug.yml up --build webapp
+  ```
 
 - Allows user to enter the executive container in order to execute certain commands
 	```
-	docker-compose exec webapp /bin/sh
+	docker compose exec webapp /bin/sh
 	```
 
 - Rebuild the MYSQL container and recreate from scratch. Use this when you make changes to the db container before building the container again. Leave out -d to see it run	
 	```
-	docker-compose up -d --build --force-recreate --renew-anon-volumes db
+	docker compose up -d --build --force-recreate --renew-anon-volumes db
 	```
 
 - Stops ALL docker containers running	
 	```
-	docker-compose stop
-	```
-
-- Use to upload changes to the docker containers database (in place of flask db migrate/upgrade)
-	```
-	docker db migrate 
-	docker db upgrade
+	docker compose stop
 	```
 	
+## Debugging
+The python code running in the docker container can be debugged via VS Code. When run in development mode, the debugpy module is used to connect VS Code to the Flask server. To attach to the Flask server running in the docker container, choose "Start Debugging" from the "Run" menu.
+
 ## Requirements.txt
 Specifies the versions of all the different modules that have been imported/used within the code
 
@@ -196,12 +184,12 @@ Essential lines of code:
 
 - To create and/or update backup file for database
 	```
-	docker exec CONTAINER /usr/bin/mysqldump -u root --password=root DATABASE > backup.sql
+	docker exec CONTAINER /usr/bin/mysqldump -u root --password=PASSWORD nnhshalfcaf > backup.sql
 	```
 	
 - To restore file for database on a machine
 	```
-	cat backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u root --password=root DATABASE
+	cat ./backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u root --password=PASSWORD nnhshalfcaf
 	```
 	
 
